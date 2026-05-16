@@ -5,7 +5,12 @@
     "city": "Guadalajara",
     "capacity": 48071,
     "coordinates": [-103.463135, 20.681721],
-    "sections": []
+    "sections": [
+      { "id": "105", "label": "Section 105", "tier": "Lower", "atmosphere": 8, "visibility": 9, "price": "€195" },
+      { "id": "T1-36", "label": "Tribuna T1-36", "tier": "Preferente", "atmosphere": 7, "visibility": 9, "price": "€285" },
+      { "id": "T2-29", "label": "Tribuna T2-29", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€120" },
+      { "id": "T2-35", "label": "Tribuna T2-35", "tier": "Cabecera", "atmosphere": 10, "visibility": 7, "price": "€145" }
+    ]
   },
   {
     "id": "arrowhead",
@@ -13,7 +18,12 @@
     "city": "Kansas City",
     "capacity": 76640,
     "coordinates": [-94.484474, 39.048855],
-    "sections": []
+    "sections": [
+      { "id": "118", "label": "Section 118", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€265" },
+      { "id": "205", "label": "Section 205", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€395" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€165" },
+      { "id": "136", "label": "Section 136", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€210" }
+    ]
   },
   {
     "id": "att",
@@ -21,7 +31,12 @@
     "city": "Dallas",
     "capacity": 94000,
     "coordinates": [-97.093231, 32.748138],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€310" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€450" },
+      { "id": "317", "label": "Section 317", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€185" },
+      { "id": "142", "label": "Section 142", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€235" }
+    ]
   },
   {
     "id": "azteca",
@@ -29,7 +44,12 @@
     "city": "Mexico City",
     "capacity": 83264,
     "coordinates": [-99.150803, 19.302837],
-    "sections": []
+    "sections": [
+      { "id": "103", "label": "Section 103", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€220" },
+      { "id": "207", "label": "Section 207", "tier": "Preferente", "atmosphere": 8, "visibility": 9, "price": "€320" },
+      { "id": "303", "label": "Section 303", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€110" },
+      { "id": "314", "label": "Section 314", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€135" }
+    ]
   },
   {
     "id": "bbva",
@@ -37,7 +57,12 @@
     "city": "Monterrey",
     "capacity": 53500,
     "coordinates": [-100.244621, 25.669132],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€210" },
+      { "id": "208", "label": "Section 208", "tier": "Preferente", "atmosphere": 8, "visibility": 9, "price": "€295" },
+      { "id": "243", "label": "Section 243", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€105" },
+      { "id": "136", "label": "Section 136", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€130" }
+    ]
   },
   {
     "id": "bc-place",
@@ -45,7 +70,12 @@
     "city": "Vancouver",
     "capacity": 54000,
     "coordinates": [-123.112564, 49.276646],
-    "sections": []
+    "sections": [
+      { "id": "214", "label": "Section 214", "tier": "Lower", "atmosphere": 8, "visibility": 9, "price": "€240" },
+      { "id": "218", "label": "Section 218", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€360" },
+      { "id": "229", "label": "Section 229", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€155" },
+      { "id": "206", "label": "Section 206", "tier": "Corner", "atmosphere": 9, "visibility": 7, "price": "€185" }
+    ]
   },
   {
     "id": "bmo-field",
@@ -53,7 +83,12 @@
     "city": "Toronto",
     "capacity": 45500,
     "coordinates": [-79.418961, 43.633087],
-    "sections": []
+    "sections": [
+      { "id": "108", "label": "Section 108", "tier": "Lower", "atmosphere": 8, "visibility": 9, "price": "€225" },
+      { "id": "123", "label": "Section 123", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€340" },
+      { "id": "208", "label": "Section 208", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€140" },
+      { "id": "204", "label": "Section 204", "tier": "Corner", "atmosphere": 9, "visibility": 7, "price": "€175" }
+    ]
   },
   {
     "id": "gillette",
@@ -61,7 +96,12 @@
     "city": "Boston",
     "capacity": 70000,
     "coordinates": [-71.264404, 42.09079],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€275" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€410" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€170" },
+      { "id": "140", "label": "Section 140", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€215" }
+    ]
   },
   {
     "id": "hard-rock",
@@ -69,7 +109,12 @@
     "city": "Miami",
     "capacity": 65000,
     "coordinates": [-80.239326, 25.95783],
-    "sections": []
+    "sections": [
+      { "id": "122", "label": "Section 122", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€290" },
+      { "id": "213", "label": "Section 213", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€430" },
+      { "id": "313", "label": "Section 313", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€175" },
+      { "id": "107", "label": "Section 107", "tier": "End Zone", "atmosphere": 10, "visibility": 6, "price": "€225" }
+    ]
   },
   {
     "id": "levis",
@@ -77,7 +122,12 @@
     "city": "Santa Clara",
     "capacity": 70909,
     "coordinates": [-121.969765, 37.403297],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€295" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€435" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€180" },
+      { "id": "148", "label": "Section 148", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€230" }
+    ]
   },
   {
     "id": "lincoln-financial",
@@ -85,7 +135,12 @@
     "city": "Philadelphia",
     "capacity": 69796,
     "coordinates": [-75.167862, 39.901325],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€270" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€405" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€168" },
+      { "id": "140", "label": "Section 140", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€212" }
+    ]
   },
   {
     "id": "lumen",
@@ -93,7 +148,12 @@
     "city": "Seattle",
     "capacity": 69000,
     "coordinates": [-122.331917, 47.595135],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€268" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€400" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€165" },
+      { "id": "136", "label": "Section 136", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€208" }
+    ]
   },
   {
     "id": "mercedes-benz",
@@ -101,7 +161,12 @@
     "city": "Atlanta",
     "capacity": 75000,
     "coordinates": [-84.401436, 33.755371],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 9, "price": "€285" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€420" },
+      { "id": "337", "label": "Section 337", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€178" },
+      { "id": "243", "label": "Section 243", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€222" }
+    ]
   },
   {
     "id": "metlife",
@@ -109,7 +174,12 @@
     "city": "New York",
     "capacity": 82500,
     "coordinates": [-74.074951, 40.813477],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€280" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€420" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€180" },
+      { "id": "401", "label": "Section 401", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€220" }
+    ]
   },
   {
     "id": "nrg",
@@ -117,7 +187,12 @@
     "city": "Houston",
     "capacity": 72220,
     "coordinates": [-95.410965, 29.684702],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€272" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€408" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€170" },
+      { "id": "136", "label": "Section 136", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€214" }
+    ]
   },
   {
     "id": "sofi",
@@ -125,6 +200,11 @@
     "city": "Los Angeles",
     "capacity": 70240,
     "coordinates": [-118.339447, 33.953438],
-    "sections": []
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€310" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€450" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 6, "visibility": 8, "price": "€195" },
+      { "id": "401", "label": "Section 401", "tier": "End Zone", "atmosphere": 10, "visibility": 6, "price": "€240" }
+    ]
   }
 ]

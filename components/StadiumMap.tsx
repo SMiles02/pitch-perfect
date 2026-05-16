@@ -9,19 +9,29 @@ interface StadiumMapProps {
   matchId?: number;
 }
 
+const lower = { x: 35, y: 55, w: 30, h: 18 };
+const club = { x: 30, y: 35, w: 40, h: 14 };
+const upper = { x: 25, y: 18, w: 50, h: 12 };
+const cornerLeft = { x: 8, y: 40, w: 18, h: 25 };
+const cornerRight = { x: 72, y: 38, w: 20, h: 28 };
+
 const sectionPositions: Record<string, Record<string, { x: number; y: number; w: number; h: number }>> = {
-  metlife: {
-    "101": { x: 35, y: 55, w: 30, h: 18 },
-    "201": { x: 30, y: 35, w: 40, h: 14 },
-    "301": { x: 25, y: 18, w: 50, h: 12 },
-    "401": { x: 8, y: 40, w: 18, h: 25 },
-  },
-  sofi: {
-    "101": { x: 32, y: 58, w: 36, h: 16 },
-    "201": { x: 28, y: 38, w: 44, h: 14 },
-    "301": { x: 22, y: 15, w: 56, h: 14 },
-    "401": { x: 72, y: 38, w: 20, h: 28 },
-  },
+  akron: { "105": lower, "T1-36": club, "T2-29": upper, "T2-35": cornerLeft },
+  arrowhead: { "118": lower, "205": club, "301": upper, "136": cornerLeft },
+  att: { "101": lower, "201": club, "317": upper, "142": cornerLeft },
+  azteca: { "103": lower, "207": club, "303": upper, "314": cornerRight },
+  bbva: { "101": lower, "208": club, "243": upper, "136": cornerLeft },
+  "bc-place": { "214": lower, "218": club, "229": upper, "206": cornerLeft },
+  "bmo-field": { "108": lower, "123": club, "208": upper, "204": cornerRight },
+  gillette: { "101": lower, "201": club, "301": upper, "140": cornerLeft },
+  "hard-rock": { "122": lower, "213": club, "313": upper, "107": cornerRight },
+  levis: { "101": lower, "201": club, "301": upper, "148": cornerLeft },
+  "lincoln-financial": { "101": lower, "201": club, "301": upper, "140": cornerLeft },
+  lumen: { "101": lower, "201": club, "301": upper, "136": cornerLeft },
+  "mercedes-benz": { "101": lower, "201": club, "337": upper, "243": cornerRight },
+  metlife: { "101": lower, "201": club, "301": upper, "401": cornerLeft },
+  nrg: { "101": lower, "201": club, "301": upper, "136": cornerLeft },
+  sofi: { "101": { x: 32, y: 58, w: 36, h: 16 }, "201": club, "301": { x: 22, y: 15, w: 56, h: 14 }, "401": cornerRight },
 };
 
 export default function StadiumMap({ stadium, matchId }: StadiumMapProps) {
