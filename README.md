@@ -34,7 +34,7 @@ Pitch Perfect brings fixtures, travel planning, stadium maps, and seat-level pan
 ### Seat Preview
 
 - **Interactive stadium maps** - Select stadium sections from a visual seating map
-- **Detailed MetLife layout** - Explore categorized MetLife Stadium sections with realistic ticket tiers
+- **Detailed seating layouts** - Explore categorized stadium sections with realistic ticket tiers
 - **Seat picker** - Drill down from section to row and seat
 - **Fullscreen panoramas** - Open seat-level views with Photo Sphere Viewer
 - **Mobile motion controls** - Move your phone to look around supported panoramas with gyroscope controls
@@ -95,7 +95,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Fixtures:** Local JSON match schedule
 - **Stadiums:** Local JSON venue and section metadata
 - **Travel:** Deterministic mock travel data from local helpers
-- **MetLife Layout:** Detailed section geometry and category mapping
+- **Stadium Layouts:** Detailed section geometry and category mapping
 - **Panoramas:** Public stadium panorama assets
 
 ## Available Experiences
@@ -105,20 +105,13 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Fixture Search** - Search the tournament by team, city, stadium, or group
 - **Match Planning** - View travel notes, maps, flights, hotels, and stadium access
 - **Tournament Hub** - Browse group tables and knockout bracket paths
-- **MetLife Stadium Preview** - Pick real mapped sections and launch panorama views
-- **SoFi Stadium Preview** - Explore placeholder seat-view assets ready for replacement
+- **Stadium Seat Preview** - Pick sections and launch panorama-style seat views across venues
 
 ## Panoramas
 
-MetLife Stadium uses source match photos in `public/panoramas/metlife/`, converted into 2:1 equirectangular-style images for the viewer. Attribution lives in `public/panoramas/metlife/ATTRIBUTION.txt`.
+The panorama experience is designed to give fans a fast, visual sense of the view from different stadium sections. Current assets are prototype reference images processed into 2:1 viewer-friendly formats so the seat preview flow can be demonstrated across venues.
 
-```bash
-npm run panoramas:metlife
-```
-
-Replace or add source images in `public/panoramas/metlife/`, then rerun the script. For best results, use true 360-degree equirectangular stadium photos with a 2:1 aspect ratio.
-
-SoFi Stadium currently uses placeholder assets in `public/panoramas/sofi/`; replace them when production-quality stadium images are available.
+For production, these previews should be backed by licensed, venue-approved 360-degree equirectangular imagery with a 2:1 aspect ratio.
 
 ## Scripts
 
@@ -127,7 +120,6 @@ npm run dev                 # Start the development server
 npm run build               # Create a production build
 npm run start               # Serve the production build
 npm run lint                # Run ESLint
-npm run panoramas:metlife   # Regenerate MetLife panorama assets
 ```
 
 ## Project Structure
@@ -156,7 +148,7 @@ scripts/                 Panorama generation scripts
 - Seat picker flow
 - Fullscreen panorama viewer
 - Mobile gyroscope controls
-- Detailed MetLife Stadium layout and panorama mapping
+- Detailed stadium layout and panorama mapping
 
 ### Next
 
