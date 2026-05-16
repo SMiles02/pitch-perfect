@@ -1,0 +1,10 @@
+MetLife Stadium panorama sources (hackathon demo):
+
+1. Metlife Stadium, 2013 Soccer International Champions Cup
+   Alen Ištoković — CC BY 3.0
+   https://commons.wikimedia.org/wiki/File:Metlife_Stadium,_2013_Soccer_International_Champions_Cup_-_panoramio_(1).jpg
+
+2. Arsenal Man U Metlife Stadium July 2023
+   https://commons.wikimedia.org/wiki/File:Arsenal_Man_U_Metlife_Stadium_July_2023.jpg
+
+Section panoramas are derived crops formatted as equirectangular 2:1 for Photo Sphere Viewer.

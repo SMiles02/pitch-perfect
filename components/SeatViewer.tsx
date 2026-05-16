@@ -11,6 +11,8 @@ interface SeatViewerProps {
   sectionLabel: string;
   description?: string;
   stadiumName: string;
+  defaultYaw?: number;
+  defaultPitch?: number;
 }
 
 export default function SeatViewer({
@@ -18,6 +20,8 @@ export default function SeatViewer({
   sectionLabel,
   description,
   stadiumName,
+  defaultYaw = 0,
+  defaultPitch = 0,
 }: SeatViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Viewer | null>(null);
@@ -40,8 +44,8 @@ export default function SeatViewer({
     const viewer = new Viewer({
       container: containerRef.current,
       panorama: panoramaUrl,
-      defaultYaw: 0,
-      defaultPitch: 0,
+      defaultYaw,
+      defaultPitch,
       navbar: false,
       touchmoveTwoFingers: true,
       mousewheel: true,
@@ -72,7 +76,7 @@ export default function SeatViewer({
       viewer.destroy();
       viewerRef.current = null;
     };
-  }, [panoramaUrl]);
+  }, [panoramaUrl, defaultYaw, defaultPitch]);
 
   const enableGyro = async () => {
     const viewer = viewerRef.current;

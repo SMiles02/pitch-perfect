@@ -27,6 +27,8 @@ export default function SeatViewPage() {
       sectionLabel={section.label}
       description={seatView.description}
       stadiumName={stadium.name}
+      defaultYaw={seatView.defaultYaw}
+      defaultPitch={seatView.defaultPitch}
     />
   );
 }

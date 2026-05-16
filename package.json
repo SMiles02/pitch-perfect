@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "panoramas:metlife": "python3 scripts/generate-metlife-panoramas.py"
   },
   "dependencies": {
     "@photo-sphere-viewer/core": "^5.14.1",

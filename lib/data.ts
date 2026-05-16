@@ -35,6 +35,8 @@ export interface Stadium {
 export interface SeatView {
   panorama: string;
   description: string;
+  defaultPitch?: number;
+  defaultYaw?: number;
 }
 
 export const matches = matchesData as Match[];

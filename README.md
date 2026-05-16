@@ -28,7 +28,15 @@ Open [http://localhost:3000](http://localhost:3000). For the gyroscope demo, use
 
 ## Panoramas
 
-Replace files in `public/panoramas/{metlife,sofi}/` with equirectangular (2:1) stadium images. Update paths in `data/seatviews.json`.
+**MetLife Stadium** uses real match photos from Wikimedia Commons (see `public/panoramas/metlife/ATTRIBUTION.txt`), converted to equirectangular 2:1 for the viewer:
+
+```bash
+npm run panoramas:metlife
+```
+
+Replace or add source images in `public/panoramas/metlife/`, then re-run the script. For even better results, drop in true 360° equirectangular stadium photos (2:1 aspect) per section.
+
+**SoFi** still uses placeholder assets — swap `public/panoramas/sofi/` when you have stadium images.
 
 ## Scripts
 
