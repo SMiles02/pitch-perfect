@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
-import MatchCard from "@/components/MatchCard";
+import MatchExplorer from "@/components/MatchExplorer";
 import { matches } from "@/lib/data";
 
 export default function HomePage() {
@@ -13,30 +13,14 @@ export default function HomePage() {
 
       <section id="matches" className="relative px-4 py-24">
         <div className="absolute inset-0 hero-gradient opacity-50" />
-        <div className="relative mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <p className="mb-2 text-sm uppercase tracking-[0.25em] text-emerald-400/80">
-              Match Explorer
-            </p>
-            <h2 className="text-3xl font-bold md:text-4xl">
-              Upcoming <span className="text-gradient">World Cup</span> Matches
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-slate-400">
-              Select a match to plan flights, hotels, transport, and preview your seat.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-6 sm:grid-cols-2">
-            {matches.map((match, i) => (
-              <MatchCard key={match.id} match={match} index={i} />
-            ))}
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative mx-auto max-w-6xl"
+        >
+          <MatchExplorer matches={matches} />
+        </motion.div>
       </section>
 
       <section className="border-t border-white/5 px-4 py-20">
@@ -52,7 +36,12 @@ export default function HomePage() {
               Select your stadium section, open the immersive viewer, and physically rotate your
               phone. The panorama moves in sync — like you&apos;re already in your seat.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap justify-center gap-4"
+            >
               <Link
                 href="/stadium/metlife"
                 className="rounded-full border border-emerald-500/30 px-6 py-2 text-sm font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10"
@@ -65,7 +54,7 @@ export default function HomePage() {
               >
                 SoFi Stadium
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
