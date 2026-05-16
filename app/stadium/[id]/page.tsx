@@ -36,8 +36,8 @@ function StadiumContent() {
           >
             ← Back
           </Link>
-          <p className="text-sm uppercase tracking-widest text-emerald-400">Seat Selection</p>
-          <h1 className="mt-2 text-3xl font-bold md:text-4xl">{stadium.name}</h1>
+          <p className="text-sm uppercase tracking-[0.22em] text-emerald-300/80">Seat map</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">{stadium.name}</h1>
           <p className="mt-2 text-slate-400">
             {stadium.city} · Capacity {stadium.capacity.toLocaleString()}
           </p>
@@ -47,7 +47,7 @@ function StadiumContent() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15 }}
-          className="rounded-3xl glass p-4 md:p-8 glow-accent"
+          className="rounded-3xl border border-slate-500/15 bg-slate-950/50 p-4 shadow-2xl shadow-slate-950/20 md:p-8"
         >
           <StadiumMap
             stadium={stadium}
@@ -63,7 +63,7 @@ function StadiumContent() {
             transition={{ delay: 0.3 }}
             className="mt-8 text-center text-sm text-slate-500"
           >
-            172 sections · 4 FIFA ticket categories · tap any block, then pick a seat
+            172 sections · 4 FIFA ticket categories · tap a block, then pick a seat
           </motion.p>
         ) : (
           <motion.div
@@ -73,7 +73,7 @@ function StadiumContent() {
             className="mt-10 grid gap-4 sm:grid-cols-2"
           >
             {stadium.sections.map((section) => (
-              <div key={section.id} className="rounded-xl border border-white/5 bg-slate-900/40 p-4">
+              <div key={section.id} className="rounded-xl border border-slate-500/15 bg-slate-950/45 p-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-white">{section.label}</p>

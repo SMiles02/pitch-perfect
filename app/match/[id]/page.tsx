@@ -43,10 +43,10 @@ export default function MatchPage() {
           <Link href="/#matches" className="mb-4 inline-block text-sm text-slate-500 hover:text-emerald-400">
             ← Back to matches
           </Link>
-          <p className="text-sm uppercase tracking-widest text-emerald-400">
+          <p className="text-sm uppercase tracking-[0.22em] text-emerald-300/80">
             Match {match.id} · {match.group}
           </p>
-          <h1 className="mt-2 text-3xl font-bold md:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
             {homeLabel} vs {awayLabel}
           </h1>
           <p className="mt-2 text-slate-400">
@@ -60,7 +60,7 @@ export default function MatchPage() {
           transition={{ delay: 0.2 }}
           className="mb-10"
         >
-          <h2 className="mb-6 text-xl font-semibold">Travel Planner</h2>
+          <h2 className="mb-6 text-xl font-semibold">Travel notes</h2>
           <TravelPanel match={match} stadiumCoords={stadium.coordinates} />
         </motion.div>
 
@@ -68,17 +68,17 @@ export default function MatchPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-2xl glass p-8 text-center glow-accent"
+          className="rounded-2xl border border-slate-500/15 bg-slate-950/50 p-8 text-center shadow-2xl shadow-slate-950/20"
         >
-          <h2 className="mb-2 text-xl font-bold">Ready for the immersive experience?</h2>
+          <h2 className="mb-2 text-xl font-semibold">Want to check the view?</h2>
           <p className="mb-6 text-slate-400">
-            Choose your stadium section and rotate your phone to preview your seat view.
+            Choose a stadium section and open a seat-level panorama when one is available.
           </p>
           <Link
             href={`/stadium/${match.stadiumId}?match=${match.id}`}
-            className="inline-block rounded-full bg-gradient-to-r from-emerald-500 to-violet-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-transform hover:scale-105"
+            className="inline-block rounded-full bg-emerald-400 px-8 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-slate-950/20 transition-transform hover:scale-[1.03] hover:bg-emerald-300"
           >
-            Select Stadium Section →
+            Choose a section
           </Link>
         </motion.div>
       </div>

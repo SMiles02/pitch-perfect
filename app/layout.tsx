@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pitch Perfect | FIFA World Cup 2026",
+  title: "Pitch Perfect | World Cup Travel Planner",
   description:
-    "Experience your World Cup seat before you travel. Immersive stadium views, travel planning, and match discovery.",
+    "Pick a World Cup match, compare realistic travel options, and preview the view from nearby seats.",
 };
 
 export const viewport: Viewport = {
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased bg-[#030712] text-slate-100`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased bg-[#0a0f1c] text-slate-100`}
       >
         <Navbar />
         <main>{children}</main>

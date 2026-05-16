@@ -61,16 +61,17 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mb-12 text-center"
+        className="mb-12"
       >
-        <p className="mb-2 text-sm uppercase tracking-[0.25em] text-emerald-400/80">
-          Match Explorer
+        <p className="mb-2 text-sm uppercase tracking-[0.22em] text-emerald-300/80">
+          Fixture finder
         </p>
-        <h2 className="text-3xl font-bold md:text-4xl">
-          Upcoming <span className="text-gradient">World Cup</span> Matches
+        <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+          Start with a match
         </h2>
-        <p className="mx-auto mt-3 max-w-xl text-slate-400">
-          Select a match to plan flights, hotels, transport, and preview your seat.
+        <p className="mt-3 max-w-xl leading-7 text-slate-400">
+          Search by team, city, stadium, or group. Each fixture opens into travel options
+          and nearby seat previews.
         </p>
       </motion.div>
 
@@ -106,7 +107,7 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
               if (e.target.value.trim()) setShowAll(false);
             }}
             placeholder="Search team, city, stadium, or group…"
-            className="w-full rounded-xl border border-white/10 bg-slate-900/60 py-3 pl-11 pr-4 text-sm text-slate-200 placeholder:text-slate-500 outline-none transition-colors focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30"
+            className="w-full rounded-xl border border-slate-500/20 bg-slate-950/50 py-3 pl-11 pr-4 text-sm text-slate-200 placeholder:text-slate-500 outline-none transition-colors focus:border-emerald-300/40 focus:ring-1 focus:ring-emerald-300/20"
           />
         </label>
 
@@ -153,7 +154,7 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
               key="empty"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="rounded-2xl border border-dashed border-white/10 py-16 text-center text-slate-500"
+              className="rounded-2xl border border-dashed border-slate-500/20 py-16 text-center text-slate-500"
             >
               No matches match your search. Try a different team, city, or group.
             </motion.p>
@@ -171,7 +172,7 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
           <button
             type="button"
             onClick={() => setShowAll((prev) => !prev)}
-            className="rounded-full border border-white/10 bg-slate-900/50 px-6 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/10 hover:text-emerald-400"
+            className="rounded-full border border-slate-500/20 bg-slate-950/45 px-6 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:border-emerald-300/30 hover:bg-emerald-300/10 hover:text-emerald-200"
           >
             {showAll ? "Show fewer matches" : `View all ${total} matches`}
           </button>

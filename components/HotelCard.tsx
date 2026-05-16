@@ -9,14 +9,14 @@ export default function HotelCard({ hotel, index = 0 }: { hotel: Hotel; index?: 
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 + 0.2 }}
-      className="rounded-xl glass p-4"
+      className="rounded-xl border border-slate-500/15 bg-slate-950/45 p-4"
     >
       <div className="mb-2 flex items-start justify-between">
         <div>
           <p className="font-semibold text-white">{hotel.name}</p>
           <p className="text-sm text-slate-400">{hotel.distance}</p>
         </div>
-        <span className="rounded-lg bg-violet-500/20 px-2 py-1 text-sm font-bold text-violet-400">
+        <span className="rounded-lg border border-sky-300/20 bg-sky-300/10 px-2 py-1 text-sm font-semibold text-sky-200">
           {hotel.price}
         </span>
       </div>

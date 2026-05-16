@@ -9,14 +9,14 @@ export default function FlightCard({ flight, index = 0 }: { flight: Flight; inde
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="rounded-xl glass p-4"
+      className="rounded-xl border border-slate-500/15 bg-slate-950/45 p-4"
     >
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <p className="font-semibold text-white">Cheapest: {flight.airline}</p>
+          <p className="font-semibold text-white">{flight.airline}</p>
           <p className="text-sm text-slate-400">{flight.route}</p>
         </div>
-        <span className="rounded-lg bg-emerald-500/20 px-2 py-1 text-sm font-bold text-emerald-400">
+        <span className="rounded-lg border border-emerald-300/20 bg-emerald-300/10 px-2 py-1 text-sm font-semibold text-emerald-200">
           Est. {flight.price}
         </span>
       </div>
@@ -40,7 +40,7 @@ export default function FlightCard({ flight, index = 0 }: { flight: Flight; inde
         href={flight.bookingUrl}
         target="_blank"
         rel="noreferrer"
-        className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm font-semibold text-emerald-300 transition-colors hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:text-emerald-200"
+        className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-slate-500/20 bg-slate-900/60 px-3 py-2 text-sm font-semibold text-slate-200 transition-colors hover:border-emerald-300/40 hover:bg-emerald-300/10 hover:text-emerald-100"
         aria-label="Search all flights for this match trip"
       >
         Search all flights

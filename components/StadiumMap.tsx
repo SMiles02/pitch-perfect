@@ -69,7 +69,7 @@ function GenericStadiumMap({ stadium, matchId }: StadiumMapProps) {
           </linearGradient>
         </defs>
         <ellipse cx="50" cy="40" rx="48" ry="38" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-        <rect x="30" y="32" width="40" height="16" rx="1" fill="url(#fieldGrad)" stroke="#22c55e" strokeWidth="0.3" />
+        <rect x="30" y="32" width="40" height="16" rx="1" fill="url(#fieldGrad)" stroke="#4ade80" strokeWidth="0.3" />
         {stadium.sections.map((section) => {
           const pos = positions[section.id] ?? zoneForSection(section);
           return (
@@ -86,8 +86,8 @@ function GenericStadiumMap({ stadium, matchId }: StadiumMapProps) {
                 width={pos.w}
                 height={pos.h}
                 rx={2}
-                fill="rgba(0, 255, 136, 0.15)"
-                stroke="#00ff88"
+                fill="rgba(74, 222, 128, 0.14)"
+                stroke="#4ade80"
                 strokeWidth="0.4"
               />
               <text
@@ -95,7 +95,7 @@ function GenericStadiumMap({ stadium, matchId }: StadiumMapProps) {
                 y={pos.y + pos.h / 2 + 1}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="#00ff88"
+                fill="#bbf7d0"
                 fontSize="3.5"
                 fontWeight="600"
                 pointerEvents="none"
@@ -106,7 +106,7 @@ function GenericStadiumMap({ stadium, matchId }: StadiumMapProps) {
           );
         })}
       </svg>
-      <p className="mt-4 text-center text-sm text-slate-500">Tap a section to choose your seat</p>
+      <p className="mt-4 text-center text-sm text-slate-500">Tap a section to choose a seat</p>
     </motion.div>
   );
 }

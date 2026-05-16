@@ -18,9 +18,9 @@ const routeLayer: LayerProps = {
   id: "route",
   type: "line",
   paint: {
-    "line-color": "#00ff88",
+    "line-color": "#4ade80",
     "line-width": 3,
-    "line-opacity": 0.8,
+    "line-opacity": 0.7,
   },
 };
 
@@ -63,14 +63,14 @@ export default function StadiumMapView({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={`flex h-full min-h-[280px] items-center justify-center rounded-2xl border border-dashed border-white/10 bg-slate-900/50 ${className}`}
+        className={`flex h-full min-h-[280px] items-center justify-center rounded-2xl border border-dashed border-slate-500/20 bg-slate-950/50 ${className}`}
       >
         <div className="p-6 text-center">
           <p className="mb-2 text-sm font-medium text-slate-300">Map Preview</p>
           <p className="text-xs text-slate-500">
-            Add <code className="text-emerald-400">NEXT_PUBLIC_MAPBOX_TOKEN</code> to .env.local
+            Add <code className="text-emerald-300">NEXT_PUBLIC_MAPBOX_TOKEN</code> to .env.local
           </p>
-          <p className="mt-4 text-xs text-emerald-400/90">
+          <p className="mt-4 text-xs text-emerald-300/90">
             {originLabel} → Stadium
           </p>
           <p className="mt-1 text-xs text-slate-600">
@@ -104,23 +104,23 @@ export default function StadiumMapView({
             animate={{ scale: 1, opacity: 1 }}
             className="flex flex-col items-center"
           >
-            <span className="rounded-full bg-violet-600 px-2 py-0.5 text-[10px] font-bold text-white">
+            <span className="rounded-full bg-sky-700 px-2 py-0.5 text-[10px] font-semibold text-white">
               {originLabel.toUpperCase()}
             </span>
-            <span className="text-2xl">✈️</span>
+            <span className="mt-1 h-3 w-3 rounded-full border-2 border-white bg-sky-400 shadow-lg shadow-sky-950/50" />
           </motion.div>
         </Marker>
         <Marker longitude={stadiumCoords[0]} latitude={stadiumCoords[1]} anchor="bottom">
           <div className="flex flex-col items-center">
-            <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-bold text-black">
+            <span className="rounded-full bg-emerald-300 px-2 py-0.5 text-[10px] font-semibold text-slate-950">
               STADIUM
             </span>
-            <span className="text-2xl">🏟️</span>
+            <span className="mt-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-emerald-400 shadow-lg shadow-emerald-950/50" />
           </div>
         </Marker>
         {hotelCoords.map((coords, i) => (
           <Marker key={i} longitude={coords[0]} latitude={coords[1]} anchor="bottom">
-            <span className="text-xl">🏨</span>
+            <span className="block h-2.5 w-2.5 rounded-full border border-white bg-slate-300 shadow-lg shadow-slate-950/50" />
           </Marker>
         ))}
       </Map>

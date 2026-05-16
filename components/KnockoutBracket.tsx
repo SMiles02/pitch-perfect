@@ -31,7 +31,7 @@ function BracketMatchCard({ match }: { match: Match }) {
   return (
     <Link
       href={`/match/${match.id}`}
-      className={`group block rounded-xl border border-white/10 bg-slate-900/70 p-3 transition-colors hover:border-emerald-500/40 hover:bg-slate-900 ${
+      className={`group block rounded-xl border border-slate-500/15 bg-slate-950/55 p-3 transition-colors hover:border-emerald-300/35 hover:bg-slate-900/80 ${
         isThirdPlace ? "border-amber-500/20" : ""
       }`}
     >
@@ -40,7 +40,7 @@ function BracketMatchCard({ match }: { match: Match }) {
         animate={{ opacity: 1, y: 0 }}
         className="mb-2 flex items-center justify-between gap-2"
       >
-        <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold tabular-nums text-emerald-400">
+        <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-emerald-300">
           Match {match.id}
         </span>
         <span className="truncate text-[10px] text-slate-500">
@@ -48,13 +48,13 @@ function BracketMatchCard({ match }: { match: Match }) {
         </span>
       </motion.div>
       <div className="space-y-1.5">
-        <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-300/90">
+        <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-200">
           {homeLabel}
         </p>
         <p className="text-center text-[10px] font-semibold uppercase tracking-wider text-slate-600">
           vs
         </p>
-        <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-300/90">
+        <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-200">
           {awayLabel}
         </p>
       </div>
@@ -79,7 +79,7 @@ export default function KnockoutBracket({ matches }: KnockoutBracketProps) {
         <div className="flex min-w-[900px] gap-4 md:min-w-[1100px] md:gap-6">
           {BRACKET_ROUNDS.map((round) => (
             <div key={round.id} className="flex min-w-[160px] flex-1 flex-col">
-              <h3 className="mb-4 text-center text-xs font-bold uppercase tracking-widest text-emerald-400/90">
+              <h3 className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-emerald-300/90">
                 {round.label}
               </h3>
               <div
@@ -98,9 +98,9 @@ export default function KnockoutBracket({ matches }: KnockoutBracketProps) {
         </div>
       </div>
 
-      <details className="rounded-2xl border border-white/10 bg-slate-900/40 p-4">
+      <details className="rounded-2xl border border-slate-500/15 bg-slate-950/45 p-4">
         <summary className="cursor-pointer text-sm font-medium text-slate-300">
-          Round of 32 — all 16 fixtures (matches 73–88)
+          Round of 32 - all 16 fixtures (matches 73-88)
         </summary>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {BRACKET_TREE.r32.map((matchId) => {

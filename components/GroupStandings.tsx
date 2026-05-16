@@ -23,10 +23,10 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.03 }}
-          className="overflow-hidden rounded-2xl glass"
+          className="overflow-hidden rounded-2xl border border-slate-500/15 bg-slate-950/50"
         >
-          <header className="border-b border-white/5 bg-emerald-500/10 px-4 py-3">
-            <h3 className="text-sm font-bold tracking-wide text-emerald-400">{groupName}</h3>
+          <header className="border-b border-slate-500/15 bg-slate-900/60 px-4 py-3">
+            <h3 className="text-sm font-semibold tracking-wide text-emerald-200">{groupName}</h3>
           </header>
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -36,7 +36,7 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
           >
             <table className="w-full min-w-[280px] text-left text-xs">
               <thead>
-                <tr className="border-b border-white/5 text-slate-500">
+                <tr className="border-b border-slate-500/15 text-slate-500">
                   <th className="px-3 py-2 font-medium">Team</th>
                   <th className="w-7 px-1 py-2 text-center" title="Played">
                     P
@@ -59,7 +59,7 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
                   <th className="w-7 px-1 py-2 text-center" title="Goal difference">
                     GD
                   </th>
-                  <th className="w-8 px-2 py-2 text-center font-semibold text-emerald-400/90">
+                  <th className="w-8 px-2 py-2 text-center font-semibold text-emerald-300/90">
                     Pts
                   </th>
                 </tr>
@@ -71,17 +71,17 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
                   return (
                     <tr
                       key={team}
-                      className={`border-b border-white/5 last:border-0 ${
-                        isQualifier ? "bg-emerald-500/5" : ""
+                      className={`border-b border-slate-500/10 last:border-0 ${
+                        isQualifier ? "bg-emerald-300/5" : ""
                       }`}
                     >
                       <td className="px-3 py-2">
                         <span className="font-medium text-slate-200">{team}</span>
                         {row === 0 && (
-                          <span className="ml-1.5 text-[10px] text-emerald-400/80">1st</span>
+                          <span className="ml-1.5 text-[10px] text-emerald-300/80">1st</span>
                         )}
                         {row === 1 && (
-                          <span className="ml-1.5 text-[10px] text-violet-400/80">2nd</span>
+                          <span className="ml-1.5 text-[10px] text-sky-300/80">2nd</span>
                         )}
                       </td>
                       <td className="px-1 py-2 text-center text-slate-500">{stats.played}</td>
@@ -100,7 +100,7 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
               </tbody>
             </table>
           </motion.div>
-          <footer className="border-t border-white/5 px-3 py-2 text-[10px] text-slate-500">
+          <footer className="border-t border-slate-500/15 px-3 py-2 text-[10px] text-slate-500">
             Top 2 advance · 8 best 3rd places also qualify
           </footer>
         </motion.article>

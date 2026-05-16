@@ -51,7 +51,7 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
         <select
           value={originCityId}
           onChange={(e) => setOriginCityId(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-200 outline-none transition-colors focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30 sm:max-w-xs"
+          className="mt-2 w-full rounded-xl border border-slate-500/20 bg-slate-950/55 px-4 py-3 text-sm text-slate-200 outline-none transition-colors focus:border-emerald-300/40 focus:ring-1 focus:ring-emerald-300/20 sm:max-w-xs"
         >
           {ORIGIN_CITIES.map((city) => (
             <option key={city.id} value={city.id}>
@@ -62,7 +62,7 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
       </label>
       {originCity && (
         <p className="mt-2 text-xs text-slate-500">
-          Flights to {match.city} from {originCity.name}
+          Showing sample flights to {match.city} from {originCity.name}
         </p>
       )}
     </motion.div>
@@ -93,8 +93,8 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
         className="space-y-6"
       >
         <section>
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-slate-400">
-            <span>✈️</span> Flights
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+            Flights
           </h3>
           <motion.div layout className="space-y-3">
             {travel.flights.map((f, i) => (
@@ -104,8 +104,8 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
         </section>
 
         <section>
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-slate-400">
-            <span>🏨</span> Hotels
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+            Hotels
           </h3>
           <motion.div layout className="space-y-3">
             {travel.hotels.map((h, i) => (
@@ -115,19 +115,19 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
         </section>
 
         <section>
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-slate-400">
-            <span>🚇</span> Transport to Stadium
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+            Transport to stadium
           </h3>
           <motion.div className="grid gap-3 sm:grid-cols-2">
             {travel.transport.map((t) => (
               <motion.div
                 key={t.mode}
                 whileHover={{ scale: 1.02 }}
-                className="rounded-xl glass p-4"
+                className="rounded-xl border border-slate-500/15 bg-slate-950/45 p-4"
                 style={{ borderLeft: `3px solid ${t.color}` }}
               >
                 <p className="font-semibold text-white">{t.mode}</p>
-                <p className="text-2xl font-bold text-emerald-400">{t.duration}</p>
+                <p className="text-2xl font-semibold text-emerald-300">{t.duration}</p>
                 <p className="text-xs text-slate-500">{t.description}</p>
               </motion.div>
             ))}

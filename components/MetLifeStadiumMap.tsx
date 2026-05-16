@@ -92,7 +92,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
       <div className="mb-4 flex flex-wrap justify-center gap-3 text-xs">
         {(Object.entries(metlifeLayout.categories) as [MetlifeCategory, (typeof metlifeLayout.categories)["1"]][]).map(
           ([key, cat]) => (
-            <span key={key} className="flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1">
+            <span key={key} className="flex items-center gap-1.5 rounded-full border border-slate-500/20 px-2.5 py-1 text-slate-300">
               <span
                 className="h-2.5 w-2.5 rounded-sm"
                 style={{ backgroundColor: cat.fill, border: `1px solid ${cat.stroke}` }}
@@ -103,7 +103,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
         )}
       </div>
 
-      <motion.div className="overflow-hidden rounded-xl border border-white/5 bg-slate-950/80">
+      <motion.div className="overflow-hidden rounded-xl border border-slate-500/15 bg-slate-950/80">
         <motion.div className="min-h-[4.25rem]">
           <AnimatePresence>
           {selected && selectedMeta && (
@@ -111,21 +111,21 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="flex items-start justify-between gap-3 border-b border-emerald-500/20 bg-slate-950/90 px-4 py-3"
+              className="flex items-start justify-between gap-3 border-b border-slate-500/15 bg-slate-950/90 px-4 py-3"
             >
               <motion.div layout className="min-w-0">
-                <p className="text-[10px] uppercase tracking-widest text-emerald-400">Section {selected.id}</p>
+                <p className="text-[10px] uppercase tracking-widest text-emerald-300/80">Section {selected.id}</p>
                 <p className="truncate text-sm font-semibold text-white">
                   {metlifeLayout.categories[selected.category].label} · {selectedMeta.tier}
                 </p>
                 <p className="text-xs text-slate-400">
-                  {selectedMeta.price} · {placedSeats.length} seats · tap a seat for 360° view
+                  {selectedMeta.price} · {placedSeats.length} seats · tap a seat for the 360 view
                 </p>
               </motion.div>
               <button
                 type="button"
                 onClick={clearSection}
-                className="shrink-0 rounded-lg border border-white/10 px-3 py-1.5 text-sm text-slate-300 hover:border-emerald-500/40 hover:text-emerald-400"
+                className="shrink-0 rounded-lg border border-slate-500/20 px-3 py-1.5 text-sm text-slate-300 hover:border-emerald-300/40 hover:text-emerald-200"
               >
                 ← Full map
               </button>
@@ -176,7 +176,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               height={fh}
               rx={0.8}
               fill="url(#metlifeField)"
-              stroke="#22c55e"
+              stroke="#4ade80"
               strokeWidth="0.5"
             />
             <line
@@ -244,7 +244,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                         ? cat.fill.replace("0.55", "0.75")
                         : cat.fill
                   }
-                  stroke={isSelected ? "#00ff88" : isHovered ? "#fff" : cat.stroke}
+                  stroke={isSelected ? "#4ade80" : isHovered ? "#fff" : cat.stroke}
                   strokeWidth={isSelected ? 0.6 : 0.25}
                   strokeLinejoin="round"
                 />
@@ -302,12 +302,12 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                         r={seat.r}
                         fill={
                           active
-                            ? "rgba(0, 255, 136, 0.9)"
+                            ? "rgba(74, 222, 128, 0.9)"
                             : canOpen
-                              ? "rgba(0, 255, 136, 0.45)"
+                              ? "rgba(74, 222, 128, 0.42)"
                               : "rgba(100, 116, 139, 0.5)"
                         }
-                        stroke={active ? "#fff" : "rgba(0, 255, 136, 0.8)"}
+                        stroke={active ? "#fff" : "rgba(74, 222, 128, 0.75)"}
                         strokeWidth={0.12}
                       />
                       {(active || seat.r > 0.38) && (
@@ -338,7 +338,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
       <p className="mt-3 text-center text-xs text-slate-500">
         {selected ? (
           <>
-            <span className="text-emerald-500/80">Pitch</span> is toward the center · Esc or ← Full map to zoom out
+            <span className="text-emerald-300/80">Pitch</span> is toward the center · Esc or ← Full map to zoom out
           </>
         ) : (
           <>
@@ -347,7 +347,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               href="https://ticket-compare.com/stadiums/metlife-stadium/seating-plan/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-emerald-500/80 hover:text-emerald-400"
+              className="text-emerald-300/80 hover:text-emerald-200"
             >
               Ticket-Compare MetLife seating plan
             </a>

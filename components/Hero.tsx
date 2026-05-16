@@ -24,30 +24,39 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-emerald-400/80"
+          className="mb-5 text-sm font-medium uppercase tracking-[0.24em] text-emerald-300/80"
         >
-          FIFA World Cup 2026
+          World Cup 2026 trip planning
         </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.8 }}
-          className="mb-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mb-6 text-4xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          Experience Your World Cup Seat{" "}
-          <span className="text-gradient">Before You Travel</span>
+          Know the matchday view{" "}
+          <span className="relative inline-block font-serif italic">
+            before
+            <motion.span
+              aria-hidden
+              className="absolute -bottom-1 left-0 h-[0.08em] w-full origin-left rounded-full bg-emerald-300"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1, duration: 0.75, ease: "easeOut" }}
+            />
+          </span>{" "}
+          you book the trip
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="mx-auto mb-10 max-w-2xl text-lg text-slate-400 md:text-xl"
+          className="mx-auto mb-10 max-w-2xl text-lg leading-8 text-slate-300/85 md:text-xl"
         >
-          Fans spend thousands travelling to the World Cup without knowing what their
-          actual experience will feel like. Preview your view, plan your trip, and
-          rotate your phone to step inside the stadium.
+          Browse fixtures, check travel options from your city, and open a seat-level
+          panorama before you commit to tickets.
         </motion.p>
 
         <motion.div
@@ -58,11 +67,11 @@ export default function Hero() {
         >
           <Link
             href="/#matches"
-            className="group relative overflow-hidden rounded-full bg-gradient-to-r from-emerald-500 to-violet-600 px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-transform hover:scale-105"
+            className="group relative overflow-hidden rounded-full bg-emerald-400 px-8 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-950/30 transition-transform hover:scale-[1.03]"
           >
-            <span className="relative z-10">Explore Matches</span>
+            <span className="relative z-10">Browse Matches</span>
             <motion.span
-              className="absolute inset-0 bg-white/20"
+              className="absolute inset-0 bg-white/30"
               initial={{ x: "-100%" }}
               whileHover={{ x: "100%" }}
               transition={{ duration: 0.5 }}
@@ -70,15 +79,15 @@ export default function Hero() {
           </Link>
           <Link
             href="/tournament"
-            className="rounded-full border border-white/10 px-8 py-4 text-sm font-semibold text-slate-300 transition-all hover:border-emerald-500/50 hover:text-emerald-400"
+            className="rounded-full border border-slate-500/25 bg-slate-950/20 px-8 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-emerald-300/50 hover:text-emerald-200"
           >
             Groups & Bracket
           </Link>
           <Link
             href="/stadium/metlife"
-            className="rounded-full border border-white/10 px-8 py-4 text-sm font-semibold text-slate-300 transition-all hover:border-violet-500/50 hover:text-violet-400"
+            className="rounded-full border border-slate-500/25 bg-slate-950/20 px-8 py-4 text-sm font-semibold text-slate-200 transition-all hover:border-sky-300/50 hover:text-sky-200"
           >
-            Try Seat Preview
+            Open Seat Preview
           </Link>
         </motion.div>
       </div>
@@ -94,7 +103,7 @@ export default function Hero() {
           transition={{ repeat: Infinity, duration: 2 }}
           className="flex flex-col items-center gap-2 text-slate-500"
         >
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <span className="text-xs uppercase tracking-widest">Fixtures below</span>
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

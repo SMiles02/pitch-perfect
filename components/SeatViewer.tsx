@@ -168,31 +168,31 @@ export default function SeatViewer({
               exit={{ opacity: 0, y: -10 }}
               className="pointer-events-auto absolute left-4 right-4 top-8 mx-auto max-w-md"
             >
-              <div className="rounded-2xl glass px-6 py-4 text-center glow-accent">
+              <div className="rounded-2xl border border-slate-500/20 bg-slate-950/75 px-6 py-4 text-center shadow-2xl shadow-black/40 backdrop-blur">
                 <motion.div
                   animate={{ rotate: [0, 15, -15, 0] }}
                   transition={{ repeat: Infinity, duration: 2.5 }}
-                  className="mx-auto mb-3 text-3xl"
+                  className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-2xl border border-emerald-300/20 bg-emerald-300/10"
                 >
-                  📱
+                  <span className="h-5 w-3 rounded-sm border border-emerald-200/80" />
                 </motion.div>
                 <p className="text-sm font-semibold text-white">
-                  Rotate your phone to explore your seat view
+                  Move your phone to look around
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
                   {isMobile
                     ? gyroActive
-                      ? "Gyroscope active — move your device"
+                      ? "Motion controls are active"
                       : "Tap below to enable motion controls"
-                    : "Drag to look around · Use mobile for gyroscope"}
+                    : "Drag to look around · Use mobile for motion controls"}
                 </p>
                 {isMobile && !gyroActive && (
                   <button
                     type="button"
                     onClick={enableGyro}
-                    className="mt-3 rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-black"
+                    className="mt-3 rounded-full bg-emerald-300 px-4 py-2 text-xs font-semibold text-slate-950"
                   >
-                    Enable Gyroscope
+                    Enable motion controls
                   </button>
                 )}
               </div>
@@ -201,7 +201,7 @@ export default function SeatViewer({
         </AnimatePresence>
 
         <div className="pointer-events-auto absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6">
-          <p className="text-xs uppercase tracking-widest text-emerald-400">{stadiumName}</p>
+          <p className="text-xs uppercase tracking-widest text-emerald-300">{stadiumName}</p>
           <h2 className="text-xl font-bold text-white">{sectionLabel}</h2>
           {description && <p className="mt-1 text-sm text-slate-400">{description}</p>}
         </div>
@@ -209,7 +209,7 @@ export default function SeatViewer({
         <button
           type="button"
           onClick={exitFullscreen}
-          className="pointer-events-auto absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full glass text-white transition-colors hover:bg-white/10"
+          className="pointer-events-auto absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-slate-500/20 bg-slate-950/60 text-white backdrop-blur transition-colors hover:bg-white/10"
           aria-label="Close viewer"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

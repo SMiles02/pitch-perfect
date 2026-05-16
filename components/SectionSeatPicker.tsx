@@ -46,12 +46,12 @@ export default function SectionSeatPicker({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 12 }}
-      className="mt-6 rounded-2xl border border-emerald-500/20 bg-slate-900/80 p-5"
+      className="mt-6 rounded-2xl border border-slate-500/15 bg-slate-950/70 p-5"
     >
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-widest text-emerald-400">{stadiumName}</p>
-          <h3 className="text-lg font-bold text-white">{sectionLabel}</h3>
+          <p className="text-xs uppercase tracking-widest text-emerald-300/80">{stadiumName}</p>
+          <h3 className="text-lg font-semibold text-white">{sectionLabel}</h3>
           <p className="text-sm text-slate-400">
             {categoryLabel ? `${categoryLabel} · ` : ""}
             {tier} · {price} · {seats.length} seats
@@ -60,21 +60,21 @@ export default function SectionSeatPicker({
         <button
           type="button"
           onClick={onBack}
-          className="shrink-0 rounded-lg border border-white/10 px-3 py-1.5 text-sm text-slate-300 hover:border-emerald-500/40 hover:text-emerald-400"
+          className="shrink-0 rounded-lg border border-slate-500/20 px-3 py-1.5 text-sm text-slate-300 hover:border-emerald-300/40 hover:text-emerald-200"
         >
           ← Map
         </button>
       </div>
 
 
-      <div className="max-h-[min(50vh,420px)] overflow-auto rounded-xl border border-white/5 bg-black/40 p-3">
+      <div className="max-h-[min(50vh,420px)] overflow-auto rounded-xl border border-slate-500/15 bg-black/30 p-3">
         <motion.div
           className="mb-2 flex items-center justify-between px-1 text-[10px] uppercase tracking-wider text-slate-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
           <span>← Away</span>
-          <span className="text-emerald-500/80">Pitch</span>
+          <span className="text-emerald-300/80">Pitch</span>
           <span>Home →</span>
         </motion.div>
 
@@ -99,7 +99,7 @@ export default function SectionSeatPicker({
                     onClick={() => openSeat(seat.id)}
                     className={`h-6 w-6 rounded-sm text-[9px] font-medium transition-colors ${
                       hasPanorama
-                        ? "cursor-pointer bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/50 hover:text-white"
+                        ? "cursor-pointer bg-emerald-300/15 text-emerald-200 hover:bg-emerald-300/35 hover:text-white"
                         : "cursor-not-allowed bg-slate-800/80 text-slate-600"
                     }`}
                     title={seat.label}
