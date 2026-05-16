@@ -152,7 +152,7 @@ scripts/                 Panorama generation scripts
 
 ### Next
 
-- Replace placeholder stadium panoramas with real venue imagery
+- Expand the panorama library with more venue-approved seat views
 - Add live pricing and availability integrations
 - Expand travel data beyond deterministic mock options
 - Add account-based saved trips
