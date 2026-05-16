@@ -1,45 +1,172 @@
 # Pitch Perfect
 
-Immersive FIFA World Cup 2026 travel companion — preview your stadium seat by rotating your phone, plan mock flights and hotels, and explore matches.
+**Immersive FIFA World Cup 2026 Travel and Seat Planning**
 
-## Quick start
+World Cup 2026 Next.js TypeScript Tailwind Mapbox Photo Sphere Viewer
+
+> _"Know the matchday view before you book the trip."_
+
+## Challenge
+
+World Cup travel is expensive, emotional, and logistically messy. Fans often have to choose tickets, flights, hotels, and stadium sections without understanding how the whole trip fits together.
+
+## Solution
+
+Pitch Perfect brings fixtures, travel planning, stadium maps, and seat-level panoramas into one interactive experience. Start with a match, compare sample flights and hotels, explore the tournament path, choose a stadium section, and preview the view from the seat before committing to the trip.
+
+## Key Features
+
+### Fixture Finder
+
+- **World Cup 2026 matches** - Browse the full tournament schedule from match 1 through the final
+- **Fast search** - Filter by team, city, stadium, or group
+- **Match detail pages** - Open a fixture to view date, time, venue, travel notes, and seat-preview links
+- **Knockout placeholders** - Later-stage fixtures show bracket-aware labels instead of fake teams
+
+### Trip Planning
+
+- **Origin city selector** - Pick a departure city and keep the preference in local storage
+- **Sample flights** - Compare mock flight options for each host city
+- **Hotel suggestions** - See sample hotel stays near the stadium destination
+- **Stadium transport** - Compare estimated ways to get from the city to the venue
+- **Mapbox route view** - Visualize the origin, stadium, and hotel locations on an interactive map
+
+### Seat Preview
+
+- **Interactive stadium maps** - Select stadium sections from a visual seating map
+- **Detailed MetLife layout** - Explore categorized MetLife Stadium sections with realistic ticket tiers
+- **Seat picker** - Drill down from section to row and seat
+- **Fullscreen panoramas** - Open seat-level views with Photo Sphere Viewer
+- **Mobile motion controls** - Move your phone to look around supported panoramas with gyroscope controls
+
+### Tournament View
+
+- **Groups and tables** - Review all 12 group-stage tables
+- **Knockout bracket** - Follow the path from match 73 to the final
+- **Linked fixtures** - Tournament entries connect back into the same match planning flow
+
+## Demo Flow
+
+1. **Home** - Cinematic landing page with fixture search
+2. **Choose a Match** - Open travel and stadium planning for a fixture
+3. **Plan the Trip** - Compare sample flights, hotels, transport, and map locations
+4. **Pick a Section** - Use the stadium seating map to select a section
+5. **Preview the Seat** - Open a fullscreen panorama and move your phone to look around
+6. **Explore the Tournament** - Switch to groups and bracket views for the broader path
+
+## Quick Start
 
 ```bash
+# Install dependencies
 npm install
+
+# Set up environment variables
 cp .env.example .env.local
-# Add your Mapbox token to .env.local (optional — map shows fallback without it)
+
+# Optional: add a Mapbox token for the interactive map
+# NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token_here
+
+# Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). For the gyroscope demo, use a **mobile device** over HTTPS (or localhost).
+Open [http://localhost:3000](http://localhost:3000).
 
-## Demo flow
+**Important:**
 
-1. **Home** — cinematic hero + match cards
-2. **Plan My Trip** — flights, hotels, Mapbox routes
-3. **Select Stadium Section** — interactive SVG seating map
-4. **Seat View** — fullscreen Photo Sphere Viewer + gyroscope
+- The map works best with a Mapbox public token in `.env.local`.
+- Seat panoramas work on desktop with click-and-drag controls.
+- For the gyroscope seat demo, use a physical mobile device over HTTPS or localhost.
 
-## Tech stack
+## Tech Stack
 
-- Next.js 15, TypeScript, Tailwind CSS v4, Framer Motion
-- Mapbox GL (`react-map-gl`)
-- Photo Sphere Viewer + Gyroscope Plugin
+### Frontend
+
+- **Framework:** Next.js 15 App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Animation:** Framer Motion
+- **Maps:** Mapbox GL and React Map GL
+- **Panoramas:** Photo Sphere Viewer
+- **Motion Controls:** Photo Sphere Viewer Gyroscope Plugin
+
+### Data and Assets
+
+- **Fixtures:** Local JSON match schedule
+- **Stadiums:** Local JSON venue and section metadata
+- **Travel:** Deterministic mock travel data from local helpers
+- **MetLife Layout:** Detailed section geometry and category mapping
+- **Panoramas:** Public stadium panorama assets
+
+## Available Experiences
+
+**104 Matches | 16 Stadiums | Groups + Knockout | Seat-Level Preview**
+
+- **Fixture Search** - Search the tournament by team, city, stadium, or group
+- **Match Planning** - View travel notes, maps, flights, hotels, and stadium access
+- **Tournament Hub** - Browse group tables and knockout bracket paths
+- **MetLife Stadium Preview** - Pick real mapped sections and launch panorama views
+- **SoFi Stadium Preview** - Explore placeholder seat-view assets ready for replacement
 
 ## Panoramas
 
-**MetLife Stadium** uses real match photos from Wikimedia Commons (see `public/panoramas/metlife/ATTRIBUTION.txt`), converted to equirectangular 2:1 for the viewer:
+MetLife Stadium uses source match photos in `public/panoramas/metlife/`, converted into 2:1 equirectangular-style images for the viewer. Attribution lives in `public/panoramas/metlife/ATTRIBUTION.txt`.
 
 ```bash
 npm run panoramas:metlife
 ```
 
-Replace or add source images in `public/panoramas/metlife/`, then re-run the script. For even better results, drop in true 360° equirectangular stadium photos (2:1 aspect) per section.
+Replace or add source images in `public/panoramas/metlife/`, then rerun the script. For best results, use true 360-degree equirectangular stadium photos with a 2:1 aspect ratio.
 
-**SoFi** still uses placeholder assets — swap `public/panoramas/sofi/` when you have stadium images.
+SoFi Stadium currently uses placeholder assets in `public/panoramas/sofi/`; replace them when production-quality stadium images are available.
 
 ## Scripts
 
-- `npm run dev` — development server
-- `npm run build` — production build
-- `npm run start` — serve production build
+```bash
+npm run dev                 # Start the development server
+npm run build               # Create a production build
+npm run start               # Serve the production build
+npm run lint                # Run ESLint
+npm run panoramas:metlife   # Regenerate MetLife panorama assets
+```
+
+## Project Structure
+
+```text
+app/                     Next.js routes and pages
+components/              Reusable UI, maps, travel cards, stadium views
+data/                    Match, stadium, section, and seat-view JSON
+lib/                     Data access, travel generation, tournament helpers
+public/panoramas/        Stadium panorama source and generated assets
+scripts/                 Panorama generation scripts
+```
+
+## Roadmap
+
+### Completed
+
+- Cinematic landing page
+- Full fixture search
+- Match detail pages
+- Sample flight and hotel planning
+- Mapbox-powered travel map
+- Group-stage tables
+- Knockout bracket view
+- Interactive stadium section selection
+- Seat picker flow
+- Fullscreen panorama viewer
+- Mobile gyroscope controls
+- Detailed MetLife Stadium layout and panorama mapping
+
+### Next
+
+- Replace placeholder stadium panoramas with real venue imagery
+- Add live pricing and availability integrations
+- Expand travel data beyond deterministic mock options
+- Add account-based saved trips
+- Add shareable trip plans
+- Add accessibility and keyboard refinements for stadium maps
+
+## Built By
+
+Built for football fans planning the biggest trip of 2026.
