@@ -143,7 +143,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                   {metlifeLayout.categories[selected.category].label} · {selectedMeta.tier}
                 </p>
                 <p className="text-xs text-slate-400">
-                  {selectedMeta.price} · {placedSeats.length} seats · tap a seat for options
+                  {placedSeats.length} seats · tap a seat for options
                 </p>
               </motion.div>
               <button
@@ -380,7 +380,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                   </p>
                   <p className="text-sm font-semibold text-white">{selectedSeat.label}</p>
                   <p className="text-xs text-slate-400">
-                    {metlifeLayout.categories[selected.category].label} · {selectedMeta.price}
+                    {metlifeLayout.categories[selected.category].label}
                   </p>
                 </div>
                 <button
@@ -444,7 +444,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                 </a>
 
                 <p className="mt-auto text-center text-[10px] text-slate-500">
-                  Esc to close · Opens FIFA ticket portal
+                  Esc to close
                 </p>
               </div>
             </motion.aside>
