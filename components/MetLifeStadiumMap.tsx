@@ -31,7 +31,6 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
   });
   const [hovered, setHovered] = useState<string | null>(null);
   const [hoveredSeat, setHoveredSeat] = useState<string | null>(null);
-  const [selectedSeatId, setSelectedSeatId] = useState<string | null>(null);
 
   const field = getMetlifeField();
   const fullVb = metlifeLayout.viewBox.join(" ");
@@ -65,54 +64,31 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
 
   const selectSection = (sec: PlacedSection) => {
     setSelected(sec);
-    setSelectedSeatId(null);
     updateSectionParam(sec.id);
   };
 
   const clearSection = useCallback(() => {
     setSelected(null);
     setHoveredSeat(null);
-    setSelectedSeatId(null);
     updateSectionParam(null);
   }, [updateSectionParam]);
 
-  const selectedSeat = useMemo(
-    () => (selectedSeatId ? placedSeats.find((s) => s.id === selectedSeatId) ?? null : null),
-    [placedSeats, selectedSeatId]
-  );
-
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (selectedSeatId) setSelectedSeatId(null);
-      else if (selected) clearSection();
+      if (e.key === "Escape" && selected) clearSection();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected, selectedSeatId, clearSection]);
+  }, [selected, clearSection]);
 
-  const selectSeat = (seatId: string) => {
-    setSelectedSeatId((prev) => (prev === seatId ? null : seatId));
-  };
-
-  const openPanorama = () => {
-    if (!selected || !selectedSeatId || !selectedMeta?.hasPanorama) return;
-    const base = `/seat-view/metlife/${selected.id}/${selectedSeatId}`;
+  const openSeat = (seatId: string) => {
+    if (!selected || !selectedMeta?.hasPanorama) return;
+    const base = `/seat-view/metlife/${selected.id}/${seatId}`;
     router.push(matchId ? `${base}?match=${matchId}` : base);
   };
 
-  const ticketUrl =
-    "https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026/tickets";
-
   return (
-    <motion.div
-      className={`relative mx-auto w-full ${selectedSeat ? "max-w-6xl" : "max-w-4xl"}`}
-    >
-      <motion.div
-        layout
-        className={`flex gap-4 ${selectedSeat ? "flex-col lg:flex-row lg:items-stretch" : ""}`}
-      >
-        <motion.div layout className={`min-w-0 ${selectedSeat ? "flex-1" : "w-full"}`}>
+    <motion.div className="relative mx-auto w-full max-w-4xl">
       <div className="mb-4 flex flex-wrap justify-center gap-3 text-xs">
         {(Object.entries(metlifeLayout.categories) as [MetlifeCategory, (typeof metlifeLayout.categories)["1"]][]).map(
           ([key, cat]) => (
@@ -140,10 +116,10 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               <motion.div layout className="min-w-0">
                 <p className="text-[10px] uppercase tracking-widest text-emerald-300/80">Section {selected.id}</p>
                 <p className="truncate text-sm font-semibold text-white">
-                  {metlifeLayout.categories[selected.category].label}
+                  {metlifeLayout.categories[selected.category].label} · {selectedMeta.tier}
                 </p>
                 <p className="text-xs text-slate-400">
-                  {placedSeats.length} seats · tap a seat for options
+                  {selectedMeta.price} · {placedSeats.length} seats · tap a seat for the 360 view
                 </p>
               </motion.div>
               <button
@@ -305,37 +281,34 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               >
                 {placedSeats.map((seat) => {
                   const active = hoveredSeat === seat.id;
-                  const isPicked = selectedSeatId === seat.id;
                   const canOpen = selectedMeta.hasPanorama;
                   return (
                     <g
                       key={seat.id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        selectSeat(seat.id);
+                        openSeat(seat.id);
                       }}
                       onMouseEnter={() => setHoveredSeat(seat.id)}
                       onMouseLeave={() => setHoveredSeat(null)}
-                      className="cursor-pointer"
+                      className={canOpen ? "cursor-pointer" : "cursor-not-allowed"}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => e.key === "Enter" && selectSeat(seat.id)}
+                      onKeyDown={(e) => e.key === "Enter" && openSeat(seat.id)}
                     >
                       <circle
                         cx={seat.cx}
                         cy={seat.cy}
                         r={seat.r}
                         fill={
-                          isPicked
-                            ? "#4ade80"
-                            : active
-                              ? "rgba(74, 222, 128, 0.9)"
-                              : canOpen
-                                ? "rgba(74, 222, 128, 0.42)"
-                                : "rgba(100, 116, 139, 0.5)"
+                          active
+                            ? "rgba(74, 222, 128, 0.9)"
+                            : canOpen
+                              ? "rgba(74, 222, 128, 0.42)"
+                              : "rgba(100, 116, 139, 0.5)"
                         }
-                        stroke={isPicked || active ? "#fff" : "rgba(74, 222, 128, 0.75)"}
-                        strokeWidth={isPicked ? 0.18 : 0.12}
+                        stroke={active ? "#fff" : "rgba(74, 222, 128, 0.75)"}
+                        strokeWidth={0.12}
                       />
                       {(active || seat.r > 0.38) && (
                         <text
@@ -343,7 +316,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                           y={seat.cy}
                           textAnchor="middle"
                           dominantBaseline="middle"
-                          fill={isPicked || active ? "#0f172a" : "#ecfdf5"}
+                          fill={active ? "#0f172a" : "#ecfdf5"}
                           fontSize={seat.r * 0.85}
                           fontWeight="600"
                           pointerEvents="none"
@@ -361,101 +334,11 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
           </motion.svg>
         </div>
       </motion.div>
-        </motion.div>
-
-        <AnimatePresence>
-          {selectedSeat && selected && selectedMeta && (
-            <motion.aside
-              key={`seat-panel-${selectedSeat.id}`}
-              initial={{ opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 16 }}
-              transition={{ duration: 0.2 }}
-              className="flex w-full shrink-0 flex-col rounded-xl border border-slate-500/15 bg-slate-950/90 lg:w-72"
-            >
-              <motion.div layout className="flex items-start justify-between gap-2 border-b border-slate-500/15 px-4 py-3">
-                <div className="min-w-0">
-                  <p className="text-[10px] uppercase tracking-widest text-emerald-300/80">
-                    Section {selected.id}
-                  </p>
-                  <p className="text-sm font-semibold text-white">{selectedSeat.label}</p>
-                  <p className="text-xs text-slate-400">
-                    {metlifeLayout.categories[selected.category].label}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedSeatId(null)}
-                  className="shrink-0 rounded-lg p-1.5 text-slate-400 hover:bg-slate-800/80 hover:text-white"
-                  aria-label="Close seat panel"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </motion.div>
-
-              <div className="flex flex-1 flex-col gap-3 p-4">
-                {selectedMeta.hasPanorama ? (
-                  <button
-                    type="button"
-                    onClick={openPanorama}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-emerald-300"
-                  >
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                    Open 360° view
-                  </button>
-                ) : (
-                  <p className="rounded-lg border border-slate-500/15 bg-slate-900/50 px-3 py-2 text-xs text-slate-500">
-                    No panorama available for this section yet.
-                  </p>
-                )}
-
-                <a
-                  href={ticketUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-500/25 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-emerald-300/40 hover:bg-slate-800/80"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
-                    />
-                  </svg>
-                  Buy tickets
-                  <svg className="h-3 w-3 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </a>
-
-                <p className="mt-auto text-center text-[10px] text-slate-500">
-                  Esc to close
-                </p>
-              </div>
-            </motion.aside>
-          )}
-        </AnimatePresence>
-      </motion.div>
 
       <p className="mt-3 text-center text-xs text-slate-500">
         {selected ? (
           <>
-            <span className="text-emerald-300/80">Pitch</span> is toward the center · tap a seat for options · Esc to close panel
+            <span className="text-emerald-300/80">Pitch</span> is toward the center · Esc or ← Full map to zoom out
           </>
         ) : (
           <>
