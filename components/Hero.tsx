@@ -69,8 +69,14 @@ export default function Hero() {
             />
           </Link>
           <Link
-            href="/stadium/metlife"
+            href="/tournament"
             className="rounded-full border border-white/10 px-8 py-4 text-sm font-semibold text-slate-300 transition-all hover:border-emerald-500/50 hover:text-emerald-400"
+          >
+            Groups & Bracket
+          </Link>
+          <Link
+            href="/stadium/metlife"
+            className="rounded-full border border-white/10 px-8 py-4 text-sm font-semibold text-slate-300 transition-all hover:border-violet-500/50 hover:text-violet-400"
           >
             Try Seat Preview
           </Link>

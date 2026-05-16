@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import TravelPanel from "@/components/TravelPanel";
 import { getMatch, getStadium } from "@/lib/data";
+import { formatParticipant, getBracketSlot } from "@/lib/tournament";
 
 export default function MatchPage() {
   const params = useParams();
@@ -27,6 +28,10 @@ export default function MatchPage() {
     year: "numeric",
   });
 
+  const bracketSlot = getBracketSlot(match.id);
+  const homeLabel = bracketSlot ? formatParticipant(bracketSlot.home) : match.home;
+  const awayLabel = bracketSlot ? formatParticipant(bracketSlot.away) : match.away;
+
   return (
     <div className="min-h-screen px-4 pb-16 pt-28">
       <div className="mx-auto max-w-6xl">
@@ -38,9 +43,11 @@ export default function MatchPage() {
           <Link href="/#matches" className="mb-4 inline-block text-sm text-slate-500 hover:text-emerald-400">
             ← Back to matches
           </Link>
-          <p className="text-sm uppercase tracking-widest text-emerald-400">{match.group}</p>
+          <p className="text-sm uppercase tracking-widest text-emerald-400">
+            Match {match.id} · {match.group}
+          </p>
           <h1 className="mt-2 text-3xl font-bold md:text-4xl">
-            {match.home} vs {match.away}
+            {homeLabel} vs {awayLabel}
           </h1>
           <p className="mt-2 text-slate-400">
             {match.stadium} · {match.city} · {date} at {match.time}

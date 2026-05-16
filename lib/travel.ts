@@ -33,6 +33,7 @@ export interface OriginCity {
 }
 
 export const ORIGIN_CITIES: OriginCity[] = [
+  { id: "cork", name: "Cork", airport: "ORK", coordinates: [-8.4911, 51.8498] },
   { id: "dublin", name: "Dublin", airport: "DUB", coordinates: [-6.2603, 53.3498] },
   { id: "london", name: "London", airport: "LHR", coordinates: [-0.4543, 51.47] },
   { id: "paris", name: "Paris", airport: "CDG", coordinates: [2.5478, 49.0097] },
@@ -89,6 +90,7 @@ const STADIUM_REGION: Record<string, DestRegion> = {
 type OriginRegion = "europe" | "canada" | "us-east" | "us-west" | "mexico";
 
 const ORIGIN_REGION: Record<string, OriginRegion> = {
+  cork: "europe",
   dublin: "europe",
   london: "europe",
   paris: "europe",
