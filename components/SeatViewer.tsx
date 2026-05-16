@@ -37,43 +37,80 @@ export default function SeatViewer({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    let viewer: Viewer | null = null;
+    let cancelled = false;
 
-    const viewer = new Viewer({
-      container: containerRef.current,
-      panorama: panoramaUrl,
-      defaultYaw,
-      defaultPitch,
-      navbar: false,
-      touchmoveTwoFingers: true,
-      mousewheel: true,
-      plugins: [
-        [
-          GyroscopePlugin,
-          {
-            touchmove: true,
-            absolutePosition: true,
-          },
+    const resizeViewer = () => {
+      if (viewer && !cancelled) {
+        viewer.resize({ width: "100%", height: "100%" });
+      }
+    };
+
+    const initViewer = () => {
+      if (cancelled || viewer) return;
+      if (container.clientWidth === 0 || container.clientHeight === 0) return;
+
+      viewer = new Viewer({
+        container,
+        panorama: panoramaUrl,
+        defaultYaw,
+        defaultPitch,
+        navbar: false,
+        touchmoveTwoFingers: true,
+        mousewheel: true,
+        plugins: [
+          [
+            GyroscopePlugin,
+            {
+              touchmove: true,
+              absolutePosition: true,
+            },
+          ],
         ],
-      ],
-    });
+      });
 
-    viewerRef.current = viewer;
+      viewerRef.current = viewer;
 
-    viewer.addEventListener("ready", () => {
-      const gyro = viewer.getPlugin<GyroscopePlugin>(GyroscopePlugin);
-      if (gyro && mobile) {
-        gyro
-          .start()
-          .then(() => setGyroActive(true))
-          .catch(() => setGyroActive(false));
+      viewer.addEventListener("ready", () => {
+        resizeViewer();
+        const gyro = viewer!.getPlugin<GyroscopePlugin>(GyroscopePlugin);
+        if (gyro && mobile) {
+          gyro
+            .start()
+            .then(() => setGyroActive(true))
+            .catch(() => setGyroActive(false));
+        }
+      });
+    };
+
+    const observer = new ResizeObserver(() => {
+      if (viewer) {
+        resizeViewer();
+      } else {
+        initViewer();
       }
     });
+    observer.observe(container);
+
+    const rafId = requestAnimationFrame(() => {
+      initViewer();
+      resizeViewer();
+    });
+
+    window.addEventListener("resize", resizeViewer);
+    document.addEventListener("fullscreenchange", resizeViewer);
 
     return () => {
-      viewer.destroy();
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+      observer.disconnect();
+      window.removeEventListener("resize", resizeViewer);
+      document.removeEventListener("fullscreenchange", resizeViewer);
+      viewer?.destroy();
       viewerRef.current = null;
     };
   }, [panoramaUrl, defaultYaw, defaultPitch]);
@@ -102,10 +139,16 @@ export default function SeatViewer({
 
   useEffect(() => {
     const el = containerRef.current?.parentElement;
-    if (el?.requestFullscreen) {
+    if (!el?.requestFullscreen) return;
+
+    const enterFullscreen = () => {
       el.requestFullscreen().catch(() => {});
-    }
+    };
+
+    // Defer until after layout so fullscreen + panorama share correct dimensions
+    const rafId = requestAnimationFrame(enterFullscreen);
     return () => {
+      cancelAnimationFrame(rafId);
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
       }

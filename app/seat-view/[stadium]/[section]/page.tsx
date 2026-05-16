@@ -23,6 +23,7 @@ export default function SeatViewPage() {
 
   return (
     <SeatViewer
+      key={`${stadiumId}-${sectionId}`}
       panoramaUrl={seatView.panorama}
       sectionLabel={section.label}
       description={seatView.description}
