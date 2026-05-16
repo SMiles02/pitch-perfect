@@ -1,6 +1,7 @@
 export interface Flight {
   id: string;
   airline: string;
+  bookingUrl: string;
   route: string;
   departure: string;
   arrival: string;
@@ -255,6 +256,63 @@ function formatPrice(amount: number, originRegion: OriginRegion): string {
   return `$${amount}`;
 }
 
+function getMatchDemandMultiplier(matchDate: string): number {
+  const date = new Date(`${matchDate}T00:00:00Z`);
+  const tournamentStart = new Date("2026-06-11T00:00:00Z");
+  const daysFromStart = Math.floor(
+    (date.getTime() - tournamentStart.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  const dayOfWeek = date.getUTCDay();
+  const isWeekendMatch = dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6;
+
+  let multiplier = 1;
+
+  if (daysFromStart <= 2) multiplier += 0.15;
+  else if (daysFromStart >= 31) multiplier += 0.45;
+  else if (daysFromStart >= 24) multiplier += 0.3;
+  else if (daysFromStart >= 18) multiplier += 0.2;
+  else if (daysFromStart >= 11) multiplier += 0.1;
+
+  if (isWeekendMatch) multiplier += 0.08;
+
+  return multiplier;
+}
+
+function getStadiumDemandMultiplier(stadiumId: string): number {
+  const marqueeStadiums = new Set(["azteca", "att", "metlife", "sofi"]);
+
+  return marqueeStadiums.has(stadiumId) ? 1.08 : 1;
+}
+
+function estimateFlightPriceAmount(leg: FlightLeg, stadiumId: string, matchDate: string): number {
+  const directFlightMultiplier = leg.stops === 0 ? 1.06 : 0.96;
+  const estimatedPrice = leg.price
+    * directFlightMultiplier
+    * getMatchDemandMultiplier(matchDate)
+    * getStadiumDemandMultiplier(stadiumId);
+
+  return Math.round(estimatedPrice / 5) * 5;
+}
+
+function estimateFlightPrice(leg: FlightLeg, originRegion: OriginRegion, stadiumId: string, matchDate: string): string {
+  return formatPrice(estimateFlightPriceAmount(leg, stadiumId, matchDate), originRegion);
+}
+
+function formatFlightSearchDate(matchDate: string, dayOffset: number): string {
+  const date = new Date(`${matchDate}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + dayOffset);
+
+  return date.toISOString().slice(0, 10);
+}
+
+function buildFlightSearchUrl(originAirport: string, destinationAirport: string, matchDate: string): string {
+  const outboundDate = formatFlightSearchDate(matchDate, -1);
+  const returnDate = formatFlightSearchDate(matchDate, 1);
+  const query = `flights ${originAirport} to ${destinationAirport} ${outboundDate} returning ${returnDate}`;
+
+  return `https://www.google.com/travel/flights?q=${encodeURIComponent(query)}`;
+}
+
 export function getOriginCity(id: string): OriginCity {
   return ORIGIN_CITIES.find((c) => c.id === id) ?? ORIGIN_CITIES[0];
 }
@@ -275,44 +333,56 @@ export function getDestinationAirport(stadiumId: string, city: string): string {
   return STADIUM_AIRPORT[stadiumId] ?? city.slice(0, 3).toUpperCase();
 }
 
-export function getFlights(originCityId: string, stadiumId: string): Flight[] {
+export function getFlights(originCityId: string, stadiumId: string, matchDate: string): Flight[] {
   const origin = getOriginCity(originCityId);
   const destAirport = getDestinationAirport(stadiumId, "");
   const destRegion = STADIUM_REGION[stadiumId] ?? "us-central";
   const originRegion = ORIGIN_REGION[origin.id] ?? "europe";
+  const buildFlight = (leg: FlightLeg, i: number) => ({
+    id: String(i + 1),
+    airline: leg.airline,
+    bookingUrl: buildFlightSearchUrl(origin.airport, destAirport, matchDate),
+    route: `${origin.name} → ${destAirport}`,
+    departure: leg.departure,
+    arrival: leg.arrival,
+    duration: leg.duration,
+    price: estimateFlightPrice(leg, originRegion, stadiumId, matchDate),
+    stops: leg.stops,
+    estimatedPrice: estimateFlightPriceAmount(leg, stadiumId, matchDate),
+  });
+  const toCheapestFlight = (legs: [FlightLeg, FlightLeg]): Flight[] => {
+    const cheapest = legs
+      .map(buildFlight)
+      .sort((a, b) => a.estimatedPrice - b.estimatedPrice)[0];
+
+    return [{
+      id: cheapest.id,
+      airline: cheapest.airline,
+      bookingUrl: cheapest.bookingUrl,
+      route: cheapest.route,
+      departure: cheapest.departure,
+      arrival: cheapest.arrival,
+      duration: cheapest.duration,
+      price: cheapest.price,
+      stops: cheapest.stops,
+    }];
+  };
 
   if (origin.airport === destAirport) {
-    return LOCAL_FLIGHTS.map((leg, i) => ({
-      id: String(i + 1),
-      airline: leg.airline,
-      route: `${origin.name} → ${destAirport}`,
-      departure: leg.departure,
-      arrival: leg.arrival,
-      duration: leg.duration,
-      price: formatPrice(leg.price, originRegion),
-      stops: leg.stops,
-    }));
+    return toCheapestFlight(LOCAL_FLIGHTS);
   }
 
   const legs =
     ROUTE_LEGS[originRegion]?.[destRegion] ?? ROUTE_LEGS.europe["us-central"];
 
-  return legs.map((leg, i) => ({
-    id: String(i + 1),
-    airline: leg.airline,
-    route: `${origin.name} → ${destAirport}`,
-    departure: leg.departure,
-    arrival: leg.arrival,
-    duration: leg.duration,
-    price: formatPrice(leg.price, originRegion),
-    stops: leg.stops,
-  }));
+  return toCheapestFlight(legs);
 }
 
 export function getTravelData(
   stadiumId: string,
   city: string,
   originCityId: string,
+  matchDate: string,
   stadiumCoords: [number, number],
 ) {
   const isNY = stadiumId === "metlife";
@@ -320,7 +390,7 @@ export function getTravelData(
   const hotelCoords = hotelCoordsNearStadium(stadiumCoords);
 
   return {
-    flights: getFlights(originCityId, stadiumId),
+    flights: getFlights(originCityId, stadiumId, matchDate),
     hotels: [
       {
         id: "h1",
