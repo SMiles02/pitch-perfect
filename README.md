@@ -31,6 +31,13 @@ Pitch Perfect brings fixtures, travel planning, stadium maps, and seat-level pan
 - **Stadium transport** - Compare estimated ways to get from the city to the venue
 - **Mapbox route view** - Visualize the origin, stadium, and hotel locations on an interactive map
 
+### Match AI Chat
+
+- **AI matchday concierge** - Ask practical questions about hotels, transport, timing, and seat choices for a specific fixture
+- **Grounded match context** - Answers are scoped to the selected match, stadium, saved origin city, sample flights, hotels, transport, and section data
+- **Suggested prompts** - Start quickly with common matchday questions like where to stay, safe post-match routes, or seat quality for photos
+- **Demo fallback** - If no OpenAI key is configured, the app returns local context-aware demo answers so the flow still works
+
 ### Seat Preview
 
 - **Interactive stadium maps** - Select stadium sections from a visual seating map
@@ -66,6 +73,10 @@ cp .env.example .env.local
 # Optional: add a Mapbox token for the interactive map
 # NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token_here
 
+# Optional: add OpenAI for live Match AI Chat responses
+# OPENAI_API_KEY=sk-your_openai_api_key_here
+# OPENAI_MODEL=gpt-4o-mini
+
 # Start the development server
 npm run dev
 ```
@@ -75,6 +86,8 @@ Open [http://localhost:3000](http://localhost:3000).
 **Important:**
 
 - The map works best with a Mapbox public token in `.env.local`.
+- Match AI Chat works in demo mode without `OPENAI_API_KEY`; add one for live model responses.
+- `OPENAI_MODEL` is optional and defaults to `gpt-4o-mini`.
 - Seat panoramas work on desktop with click-and-drag controls.
 - For the gyroscope seat demo, use a physical mobile device over HTTPS or localhost.
 
@@ -87,6 +100,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Styling:** Tailwind CSS
 - **Animation:** Framer Motion
 - **Maps:** Mapbox GL and React Map GL
+- **AI Chat:** Next.js API route backed by OpenAI Chat Completions
 - **Panoramas:** Photo Sphere Viewer
 - **Motion Controls:** Photo Sphere Viewer Gyroscope Plugin
 
@@ -104,8 +118,22 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - **Fixture Search** - Search the tournament by team, city, stadium, or group
 - **Match Planning** - View travel notes, maps, flights, hotels, and stadium access
+- **Match AI Chat** - Ask an AI concierge for fixture-specific travel, timing, and seat advice
 - **Tournament Hub** - Browse group tables and knockout bracket paths
 - **Stadium Seat Preview** - Pick sections and launch panorama-style seat views across venues
+
+## Match AI Chat
+
+The match detail page includes an AI matchday concierge powered by `app/api/match-ai`. It builds a compact context from the selected fixture, stadium metadata, saved departure city, sample flights, hotels, transport options, and section signals, then answers only within that matchday context.
+
+Add these variables to `.env.local` to enable live model responses:
+
+```bash
+OPENAI_API_KEY=sk-your_openai_api_key_here
+OPENAI_MODEL=gpt-4o-mini
+```
+
+`OPENAI_API_KEY` is required for live OpenAI responses. `OPENAI_MODEL` is optional; if omitted, the API route uses `gpt-4o-mini`. Without an API key, Pitch Perfect still returns local demo concierge answers based on the same match context.
 
 ## Panoramas
 
