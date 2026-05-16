@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pitch Perfect
 
-## Getting Started
+Immersive FIFA World Cup 2026 travel companion — preview your stadium seat by rotating your phone, plan mock flights and hotels, and explore matches.
 
-First, run the development server:
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env.local
+# Add your Mapbox token to .env.local (optional — map shows fallback without it)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). For the gyroscope demo, use a **mobile device** over HTTPS (or localhost).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Home** — cinematic hero + match cards
+2. **Plan My Trip** — flights, hotels, Mapbox routes
+3. **Select Stadium Section** — interactive SVG seating map
+4. **Seat View** — fullscreen Photo Sphere Viewer + gyroscope
 
-## Learn More
+## Tech stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 15, TypeScript, Tailwind CSS v4, Framer Motion
+- Mapbox GL (`react-map-gl`)
+- Photo Sphere Viewer + Gyroscope Plugin
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Panoramas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Replace files in `public/panoramas/{metlife,sofi}/` with equirectangular (2:1) stadium images. Update paths in `data/seatviews.json`.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — development server
+- `npm run build` — production build
+- `npm run start` — serve production build

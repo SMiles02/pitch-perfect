@@ -1,0 +1,14 @@
+{
+  "metlife": {
+    "101": { "panorama": "/panoramas/metlife/section_101.jpg", "description": "Pitch-side lower bowl — feel every tackle" },
+    "201": { "panorama": "/panoramas/metlife/section_201.jpg", "description": "Club level — premium sightlines & comfort" },
+    "301": { "panorama": "/panoramas/metlife/section_301.jpg", "description": "Upper deck — panoramic stadium vista" },
+    "401": { "panorama": "/panoramas/metlife/section_401.jpg", "description": "Corner flag — electric fan atmosphere" }
+  },
+  "sofi": {
+    "101": { "panorama": "/panoramas/sofi/section_101.jpg", "description": "Lower sideline — immersive match energy" },
+    "201": { "panorama": "/panoramas/sofi/section_201.jpg", "description": "Club seats — Hollywood Bowl of football" },
+    "301": { "panorama": "/panoramas/sofi/section_301.jpg", "description": "Upper ring — full stadium spectacle" },
+    "401": { "panorama": "/panoramas/sofi/section_401.jpg", "description": "End zone — goal celebrations up close" }
+  }
+}

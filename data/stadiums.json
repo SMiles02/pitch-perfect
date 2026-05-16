@@ -1,0 +1,28 @@
+[
+  {
+    "id": "metlife",
+    "name": "MetLife Stadium",
+    "city": "New York",
+    "capacity": 82500,
+    "coordinates": [-74.0745, 40.8135],
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€280" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€420" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 7, "visibility": 8, "price": "€180" },
+      { "id": "401", "label": "Section 401", "tier": "Corner", "atmosphere": 10, "visibility": 7, "price": "€220" }
+    ]
+  },
+  {
+    "id": "sofi",
+    "name": "SoFi Stadium",
+    "city": "Los Angeles",
+    "capacity": 70240,
+    "coordinates": [-118.264, 33.9535],
+    "sections": [
+      { "id": "101", "label": "Section 101", "tier": "Lower", "atmosphere": 9, "visibility": 10, "price": "€310" },
+      { "id": "201", "label": "Section 201", "tier": "Club", "atmosphere": 8, "visibility": 9, "price": "€450" },
+      { "id": "301", "label": "Section 301", "tier": "Upper", "atmosphere": 6, "visibility": 8, "price": "€195" },
+      { "id": "401", "label": "Section 401", "tier": "End Zone", "atmosphere": 10, "visibility": 6, "price": "€240" }
+    ]
+  }
+]
