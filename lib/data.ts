@@ -1,7 +1,7 @@
 import matchesData from "@/data/matches.json";
 import stadiumsData from "@/data/stadiums.json";
 import seatviewsData from "@/data/seatviews.json";
-import { getMetlifeSection, metlifeLayout, sectionRing } from "@/lib/metlife-layout";
+import { getMetlifeSection, metlifeLayout, type MetlifeCategory } from "@/lib/metlife-layout";
 
 export interface Match {
   id: number;
@@ -47,7 +47,13 @@ export interface Seat {
   label: string;
 }
 
-const PANORAMA_SECTIONS = new Set(["101", "201", "301", "401"]);
+/** Panorama asset key per FIFA category (maps to section_*.jpg in seatviews). */
+const CATEGORY_PANORAMA: Record<MetlifeCategory, string> = {
+  "1": "101",
+  "2": "401",
+  "3": "301",
+  "4": "201",
+};
 
 const CATEGORY_PRICES: Record<string, string> = {
   "1": "€280",
@@ -107,14 +113,11 @@ export function getMetlifeSectionMeta(sectionId: string) {
   };
 }
 
-/** Map any MetLife section to nearest panorama asset (101 / 201 / 301 / 401). */
+/** Map any MetLife section to its category's panorama asset. */
 function metlifePanoramaBaseSection(sectionId: string): string {
-  if (PANORAMA_SECTIONS.has(sectionId)) return sectionId;
-  const ring = sectionRing(sectionId);
-  if (ring === 1) return "101";
-  if (ring === 2) return "201";
-  if (ring === 3) return "301";
-  return "401";
+  const def = getMetlifeSection(sectionId);
+  if (!def) return CATEGORY_PANORAMA["1"];
+  return CATEGORY_PANORAMA[def.category];
 }
 
 export function generateSeatsForSection(tier: string): Seat[] {
@@ -146,11 +149,7 @@ function seatAngles(sectionId: string, seatId: string, stadiumId: string) {
 
   const rowT = row / 12;
   const seatT = seat / 14;
-  const ring = stadiumId === "metlife" ? sectionRing(sectionId) : 1;
-
-  let baseYaw = base?.defaultYaw ?? 0;
-  if (ring === 2) baseYaw = Math.PI * 0.5;
-  if (ring === 3) baseYaw = Math.PI;
+  const baseYaw = base?.defaultYaw ?? 0;
 
   return {
     defaultYaw: baseYaw + (seatT - 0.5) * 0.35,
