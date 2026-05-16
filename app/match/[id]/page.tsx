@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
+import MatchAiChat from "@/components/MatchAiChat";
 import TravelPanel from "@/components/TravelPanel";
 import { getMatch, getStadium } from "@/lib/data";
 import { formatParticipant, getBracketSlot } from "@/lib/tournament";
@@ -63,6 +64,10 @@ export default function MatchPage() {
           <h2 className="mb-6 text-xl font-semibold">Travel notes</h2>
           <TravelPanel match={match} stadiumCoords={stadium.coordinates} />
         </motion.div>
+
+        <div className="mb-10">
+          <MatchAiChat match={match} stadium={stadium} />
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
