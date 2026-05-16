@@ -29,18 +29,19 @@ export interface OriginCity {
   id: string;
   name: string;
   airport: string;
+  coordinates: [number, number];
 }
 
 export const ORIGIN_CITIES: OriginCity[] = [
-  { id: "dublin", name: "Dublin", airport: "DUB" },
-  { id: "london", name: "London", airport: "LHR" },
-  { id: "paris", name: "Paris", airport: "CDG" },
-  { id: "madrid", name: "Madrid", airport: "MAD" },
-  { id: "berlin", name: "Berlin", airport: "BER" },
-  { id: "toronto", name: "Toronto", airport: "YYZ" },
-  { id: "new-york", name: "New York", airport: "JFK" },
-  { id: "los-angeles", name: "Los Angeles", airport: "LAX" },
-  { id: "mexico-city", name: "Mexico City", airport: "MEX" },
+  { id: "dublin", name: "Dublin", airport: "DUB", coordinates: [-6.2603, 53.3498] },
+  { id: "london", name: "London", airport: "LHR", coordinates: [-0.4543, 51.47] },
+  { id: "paris", name: "Paris", airport: "CDG", coordinates: [2.5478, 49.0097] },
+  { id: "madrid", name: "Madrid", airport: "MAD", coordinates: [-3.5676, 40.4719] },
+  { id: "berlin", name: "Berlin", airport: "BER", coordinates: [13.5003, 52.3667] },
+  { id: "toronto", name: "Toronto", airport: "YYZ", coordinates: [-79.6306, 43.6777] },
+  { id: "new-york", name: "New York", airport: "JFK", coordinates: [-73.7781, 40.6413] },
+  { id: "los-angeles", name: "Los Angeles", airport: "LAX", coordinates: [-118.4085, 33.9416] },
+  { id: "mexico-city", name: "Mexico City", airport: "MEX", coordinates: [-99.0721, 19.4363] },
 ];
 
 export const DEFAULT_ORIGIN_CITY_ID = "dublin";
@@ -256,6 +257,18 @@ export function getOriginCity(id: string): OriginCity {
   return ORIGIN_CITIES.find((c) => c.id === id) ?? ORIGIN_CITIES[0];
 }
 
+export function getOriginCoordinates(originCityId: string): [number, number] {
+  return getOriginCity(originCityId).coordinates;
+}
+
+function hotelCoordsNearStadium(stadiumCoords: [number, number]): [number, number][] {
+  const [lng, lat] = stadiumCoords;
+  return [
+    [lng + 0.012, lat + 0.006],
+    [lng - 0.01, lat - 0.005],
+  ];
+}
+
 export function getDestinationAirport(stadiumId: string, city: string): string {
   return STADIUM_AIRPORT[stadiumId] ?? city.slice(0, 3).toUpperCase();
 }
@@ -294,14 +307,15 @@ export function getFlights(originCityId: string, stadiumId: string): Flight[] {
   }));
 }
 
-export function getTravelData(stadiumId: string, city: string, originCityId: string) {
+export function getTravelData(
+  stadiumId: string,
+  city: string,
+  originCityId: string,
+  stadiumCoords: [number, number],
+) {
   const isNY = stadiumId === "metlife";
   const isLA = stadiumId === "sofi";
-  const hotelCoords = isNY
-    ? ([[-74.07, 40.815], [-74.08, 40.81]] as [number, number][])
-    : isLA
-      ? ([[-118.26, 33.955], [-118.27, 33.95]] as [number, number][])
-      : ([[-74.07, 40.815], [-74.08, 40.81]] as [number, number][]);
+  const hotelCoords = hotelCoordsNearStadium(stadiumCoords);
 
   return {
     flights: getFlights(originCityId, stadiumId),

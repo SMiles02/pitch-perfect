@@ -35,7 +35,7 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
     localStorage.setItem(ORIGIN_STORAGE_KEY, originCityId);
   }, [originCityId]);
 
-  const travel = getTravelData(match.stadiumId, match.city, originCityId);
+  const travel = getTravelData(match.stadiumId, match.city, originCityId, stadiumCoords);
   const hotelCoords = travel.hotels.map((h) => h.coordinates);
   const originCity = ORIGIN_CITIES.find((c) => c.id === originCityId);
 
@@ -78,6 +78,9 @@ export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) 
         className="h-[320px] lg:h-[480px] lg:min-h-0"
       >
         <StadiumMapView
+          key={originCityId}
+          originCoords={originCity?.coordinates ?? ORIGIN_CITIES[0].coordinates}
+          originLabel={originCity?.name ?? "Origin"}
           stadiumCoords={stadiumCoords}
           hotelCoords={hotelCoords}
           className="h-full"
