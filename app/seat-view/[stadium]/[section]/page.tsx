@@ -1,35 +1,40 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import SeatViewer from "@/components/SeatViewer";
-import { getStadium, getSeatView } from "@/lib/data";
+import { Suspense, useEffect } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-export default function SeatViewPage() {
+function RedirectContent() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const stadiumId = params.stadium as string;
   const sectionId = params.section as string;
+  const match = searchParams.get("match");
 
-  const stadium = getStadium(stadiumId);
-  const seatView = getSeatView(stadiumId, sectionId);
-  const section = stadium?.sections.find((s) => s.id === sectionId);
-
-  if (!stadium || !seatView || !section) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-slate-400">
-        Seat view not found.
-      </div>
-    );
-  }
+  useEffect(() => {
+    const query = new URLSearchParams();
+    query.set("section", sectionId);
+    if (match) query.set("match", match);
+    router.replace(`/stadium/${stadiumId}?${query.toString()}`);
+  }, [stadiumId, sectionId, match, router]);
 
   return (
-    <SeatViewer
-      key={`${stadiumId}-${sectionId}`}
-      panoramaUrl={seatView.panorama}
-      sectionLabel={section.label}
-      description={seatView.description}
-      stadiumName={stadium.name}
-      defaultYaw={seatView.defaultYaw}
-      defaultPitch={seatView.defaultPitch}
-    />
+    <div className="flex min-h-screen items-center justify-center bg-black text-slate-500">
+      Opening section…
+    </div>
+  );
+}
+
+export default function SectionSeatViewRedirectPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-black text-slate-500">
+          Loading…
+        </div>
+      }
+    >
+      <RedirectContent />
+    </Suspense>
   );
 }

@@ -3,10 +3,13 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { Stadium, StadiumSection } from "@/lib/data";
+import MetLifeStadiumMap from "@/components/MetLifeStadiumMap";
+import { usesDetailedLayout } from "@/lib/data";
 
 interface StadiumMapProps {
   stadium: Stadium;
   matchId?: number;
+  initialSectionId?: string;
 }
 
 const lower = { x: 35, y: 55, w: 30, h: 18 };
@@ -14,6 +17,15 @@ const club = { x: 30, y: 35, w: 40, h: 14 };
 const upper = { x: 25, y: 18, w: 50, h: 12 };
 const cornerLeft = { x: 8, y: 40, w: 18, h: 25 };
 const cornerRight = { x: 72, y: 38, w: 20, h: 28 };
+
+function zoneForSection(section: StadiumSection) {
+  const tier = section.tier.toLowerCase();
+  if (tier.includes("end") || tier.includes("cabecera")) return cornerRight;
+  if (tier.includes("corner")) return cornerLeft;
+  if (tier === "lower") return lower;
+  if (tier.includes("club") || tier.includes("preferente")) return club;
+  return upper;
+}
 
 const sectionPositions: Record<string, Record<string, { x: number; y: number; w: number; h: number }>> = {
   akron: { "105": lower, "T1-36": club, "T2-29": upper, "T2-35": cornerLeft },
@@ -29,54 +41,37 @@ const sectionPositions: Record<string, Record<string, { x: number; y: number; w:
   "lincoln-financial": { "101": lower, "201": club, "301": upper, "140": cornerLeft },
   lumen: { "101": lower, "201": club, "301": upper, "136": cornerLeft },
   "mercedes-benz": { "101": lower, "201": club, "337": upper, "243": cornerRight },
-  metlife: { "101": lower, "201": club, "301": upper, "401": cornerLeft },
   nrg: { "101": lower, "201": club, "301": upper, "136": cornerLeft },
   sofi: { "101": { x: 32, y: 58, w: 36, h: 16 }, "201": club, "301": { x: 22, y: 15, w: 56, h: 14 }, "401": cornerRight },
 };
 
-export default function StadiumMap({ stadium, matchId }: StadiumMapProps) {
+function GenericStadiumMap({ stadium, matchId }: StadiumMapProps) {
   const router = useRouter();
   const positions = sectionPositions[stadium.id] || {};
 
   const goToSection = (sectionId: string) => {
-    const base = `/seat-view/${stadium.id}/${sectionId}`;
-    const href = matchId ? `${base}?match=${matchId}` : base;
+    const base = `/stadium/${stadium.id}?section=${sectionId}`;
+    const href = matchId ? `${base}&match=${matchId}` : base;
     router.push(href);
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-lg">
-      <motion.svg
-        viewBox="0 0 100 80"
-        className="w-full drop-shadow-2xl"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-      >
+    <motion.div
+      className="relative mx-auto w-full max-w-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+    >
+      <svg viewBox="0 0 100 80" className="w-full drop-shadow-2xl" role="img">
         <defs>
           <linearGradient id="fieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#166534" />
             <stop offset="100%" stopColor="#14532d" />
           </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="1" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
-
         <ellipse cx="50" cy="40" rx="48" ry="38" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-        <ellipse cx="50" cy="40" rx="42" ry="32" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="0.3" />
-
         <rect x="30" y="32" width="40" height="16" rx="1" fill="url(#fieldGrad)" stroke="#22c55e" strokeWidth="0.3" />
-        <line x1="50" y1="32" x2="50" y2="48" stroke="rgba(255,255,255,0.3)" strokeWidth="0.2" />
-        <circle cx="50" cy="40" r="3" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.2" />
-
-        {stadium.sections.map((section: StadiumSection) => {
-          const pos = positions[section.id];
-          if (!pos) return null;
+        {stadium.sections.map((section) => {
+          const pos = positions[section.id] ?? zoneForSection(section);
           return (
             <g
               key={section.id}
@@ -84,9 +79,8 @@ export default function StadiumMap({ stadium, matchId }: StadiumMapProps) {
               className="cursor-pointer"
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && goToSection(section.id)}
             >
-              <motion.rect
+              <rect
                 x={pos.x}
                 y={pos.y}
                 width={pos.w}
@@ -95,8 +89,6 @@ export default function StadiumMap({ stadium, matchId }: StadiumMapProps) {
                 fill="rgba(0, 255, 136, 0.15)"
                 stroke="#00ff88"
                 strokeWidth="0.4"
-                whileHover={{ fill: "rgba(0, 255, 136, 0.35)" }}
-                transition={{ duration: 0.2 }}
               />
               <text
                 x={pos.x + pos.w / 2}
@@ -113,11 +105,15 @@ export default function StadiumMap({ stadium, matchId }: StadiumMapProps) {
             </g>
           );
         })}
-      </motion.svg>
-
-      <p className="mt-4 text-center text-sm text-slate-500">
-        Tap a section to preview your seat view
-      </p>
-    </div>
+      </svg>
+      <p className="mt-4 text-center text-sm text-slate-500">Tap a section to choose your seat</p>
+    </motion.div>
   );
+}
+
+export default function StadiumMap({ stadium, matchId, initialSectionId }: StadiumMapProps) {
+  if (usesDetailedLayout(stadium.id)) {
+    return <MetLifeStadiumMap matchId={matchId} initialSectionId={initialSectionId} />;
+  }
+  return <GenericStadiumMap stadium={stadium} matchId={matchId} />;
 }

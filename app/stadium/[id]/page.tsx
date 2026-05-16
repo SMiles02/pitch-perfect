@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import StadiumMap from "@/components/StadiumMap";
-import { getStadium } from "@/lib/data";
+import { getStadium, usesDetailedLayout } from "@/lib/data";
 
 function StadiumContent() {
   const params = useParams();
@@ -24,7 +24,7 @@ function StadiumContent() {
 
   return (
     <motion.div className="min-h-screen px-4 pb-16 pt-28">
-      <div className="mx-auto max-w-4xl">
+      <div className={`mx-auto ${usesDetailedLayout(stadiumId) ? "max-w-5xl" : "max-w-4xl"}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,34 +47,49 @@ function StadiumContent() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15 }}
-          className="rounded-3xl glass p-8 glow-accent"
+          className="rounded-3xl glass p-4 md:p-8 glow-accent"
         >
-          <StadiumMap stadium={stadium} matchId={matchId} />
+          <StadiumMap
+            stadium={stadium}
+            matchId={matchId}
+            initialSectionId={searchParams.get("section") ?? undefined}
+          />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-10 grid gap-4 sm:grid-cols-2"
-        >
-          {stadium.sections.map((section) => (
-            <div key={section.id} className="rounded-xl border border-white/5 bg-slate-900/40 p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-white">{section.label}</p>
-                  <p className="text-xs text-slate-500">
-                    {section.tier} · {section.price}
-                  </p>
-                </div>
-                <div className="text-right text-xs text-slate-400">
-                  <p>Atmosphere {section.atmosphere}/10</p>
-                  <p>Visibility {section.visibility}/10</p>
+        {usesDetailedLayout(stadiumId) ? (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8 text-center text-sm text-slate-500"
+          >
+            172 sections · 4 FIFA ticket categories · tap any block, then pick a seat
+          </motion.p>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mt-10 grid gap-4 sm:grid-cols-2"
+          >
+            {stadium.sections.map((section) => (
+              <div key={section.id} className="rounded-xl border border-white/5 bg-slate-900/40 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-white">{section.label}</p>
+                    <p className="text-xs text-slate-500">
+                      {section.tier} · {section.price}
+                    </p>
+                  </div>
+                  <div className="text-right text-xs text-slate-400">
+                    <p>Atmosphere {section.atmosphere}/10</p>
+                    <p>Visibility {section.visibility}/10</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
