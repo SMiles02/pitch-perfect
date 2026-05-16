@@ -189,6 +189,20 @@ export interface PlacedSection extends MetlifeSectionDef {
   labelX: number;
   labelY: number;
   midAngle: number;
+  startDeg: number;
+  endDeg: number;
+  innerR: number;
+  outerR: number;
+}
+
+export interface PlacedSeat {
+  id: string;
+  row: number;
+  number: number;
+  label: string;
+  cx: number;
+  cy: number;
+  r: number;
 }
 
 /** Equal wedge per ring; order & corners from section numbers (Ticket-Compare layout). */
@@ -224,6 +238,10 @@ export function placeMetlifeSections(): PlacedSection[] {
         labelX: label.x,
         labelY: label.y,
         midAngle: mid,
+        startDeg: start,
+        endDeg: end,
+        innerR: inner,
+        outerR: outer,
       });
     }
   }
@@ -233,6 +251,65 @@ export function placeMetlifeSections(): PlacedSection[] {
 
 export function getMetlifeSection(id: string): MetlifeSectionDef | undefined {
   return metlifeLayout.sections.find((s) => s.id === id);
+}
+
+/** ViewBox string zoomed to a single section wedge. */
+export function getSectionViewBox(sec: PlacedSection, padding = 6): string {
+  const samples = 14;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const span = sec.endDeg - sec.startDeg;
+
+  for (let i = 0; i <= samples; i++) {
+    const d = sec.startDeg + (i / samples) * span;
+    for (const r of [sec.innerR, sec.outerR]) {
+      const p = polar(CX, CY, r, d);
+      minX = Math.min(minX, p.x);
+      minY = Math.min(minY, p.y);
+      maxX = Math.max(maxX, p.x);
+      maxY = Math.max(maxY, p.y);
+    }
+  }
+
+  return `${minX - padding} ${minY - padding} ${maxX - minX + padding * 2} ${maxY - minY + padding * 2}`;
+}
+
+/** Row × seat grid inside a section wedge (row 1 = pitch side). */
+export function placeSeatsInWedge(
+  sec: PlacedSection,
+  seats: { id: string; row: number; number: number; label: string }[]
+): PlacedSeat[] {
+  const rows = [...new Set(seats.map((s) => s.row))].sort((a, b) => a - b);
+  const span = sec.endDeg - sec.startDeg;
+  const depth = sec.outerR - sec.innerR;
+  const placed: PlacedSeat[] = [];
+
+  for (const row of rows) {
+    const rowSeats = seats.filter((s) => s.row === row).sort((a, b) => a.number - b.number);
+    const rowIdx = rows.indexOf(row);
+    const rowT = (rowIdx + 0.5) / rows.length;
+    const r = sec.innerR + rowT * depth;
+
+    rowSeats.forEach((seat, i) => {
+      const seatT = (i + 0.5) / rowSeats.length;
+      const deg = sec.startDeg + seatT * span;
+      const { x, y } = polar(CX, CY, r, deg);
+      const radial = depth / rows.length;
+      const arc = (span / rowSeats.length) * (Math.PI / 180) * r * STRETCH_X;
+      const seatR = Math.min(0.55, radial * 0.38, arc * 0.32);
+
+      placed.push({
+        ...seat,
+        cx: x,
+        cy: y,
+        r: Math.max(seatR, 0.28),
+      });
+    });
+  }
+
+  return placed;
 }
 
 /**
