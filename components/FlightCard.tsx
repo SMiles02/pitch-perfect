@@ -13,11 +13,11 @@ export default function FlightCard({ flight, index = 0 }: { flight: Flight; inde
     >
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <p className="font-semibold text-white">{flight.airline}</p>
+          <p className="font-semibold text-white">Cheapest: {flight.airline}</p>
           <p className="text-sm text-slate-400">{flight.route}</p>
         </div>
         <span className="rounded-lg bg-emerald-500/20 px-2 py-1 text-sm font-bold text-emerald-400">
-          {flight.price}
+          Est. {flight.price}
         </span>
       </div>
       <div className="flex items-center justify-between text-sm">
@@ -36,6 +36,15 @@ export default function FlightCard({ flight, index = 0 }: { flight: Flight; inde
           <p className="text-xs text-slate-500">Arrive</p>
         </div>
       </div>
+      <a
+        href={flight.bookingUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm font-semibold text-emerald-300 transition-colors hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:text-emerald-200"
+        aria-label="Search all flights for this match trip"
+      >
+        Search all flights
+      </a>
     </motion.div>
   );
 }
