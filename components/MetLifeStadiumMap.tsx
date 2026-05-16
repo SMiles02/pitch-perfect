@@ -140,7 +140,7 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
               <motion.div layout className="min-w-0">
                 <p className="text-[10px] uppercase tracking-widest text-emerald-300/80">Section {selected.id}</p>
                 <p className="truncate text-sm font-semibold text-white">
-                  {metlifeLayout.categories[selected.category].label} · {selectedMeta.tier}
+                  {metlifeLayout.categories[selected.category].label}
                 </p>
                 <p className="text-xs text-slate-400">
                   {placedSeats.length} seats · tap a seat for options
