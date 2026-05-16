@@ -1,6 +1,6 @@
 {
-  "viewBox": [0, 0, 200, 140],
-  "field": { "x": 55, "y": 52, "w": 90, "h": 36 },
+  "viewBox": [0, 0, 260, 110],
+  "field": { "x": 62, "y": 38, "w": 136, "h": 34 },
   "categories": {
     "1": { "label": "Category 1", "fill": "rgba(220, 38, 38, 0.55)", "stroke": "#dc2626" },
     "2": { "label": "Category 2", "fill": "rgba(234, 88, 12, 0.55)", "stroke": "#ea580c" },

@@ -19,8 +19,12 @@ export interface MetlifeLayoutConfig {
 
 export const metlifeLayout = metlifeData as MetlifeLayoutConfig;
 
-const CX = 100;
-const CY = 70;
+const CX = 130;
+const CY = 55;
+
+/** Horizontal stretch for football-pitch proportions (touchlines long, goals short). */
+const STRETCH_X = 1.42;
+const STRETCH_Y = 0.78;
 
 /** Parse leading number from section id (e.g. 111A → 111). */
 export function sectionSortKey(id: string): number {
@@ -37,17 +41,122 @@ export function sectionRing(id: string): 1 | 2 | 3 {
 }
 
 const RING_BOUNDS: Record<1 | 2 | 3, { inner: number; outer: number }> = {
-  1: { inner: 38, outer: 52 },
-  2: { inner: 52, outer: 64 },
-  3: { inner: 64, outer: 76 },
+  1: { inner: 34, outer: 48 },
+  2: { inner: 48, outer: 58 },
+  3: { inner: 58, outer: 68 },
 };
+
+/**
+ * Map section number → compass angle (deg). Uses the tens digit within each
+ * century so 106 / 206 / 306 share an azimuth; corner blocks 306, 321, 331, 346
+ * sit on the four diagonal corners of the elliptical bowl.
+ */
+const AZIMUTH_ANCHORS: { local: number; angle: number }[] = [
+  { local: 1, angle: -90 },
+  { local: 6, angle: -45 },
+  { local: 21, angle: 45 },
+  { local: 31, angle: 135 },
+  { local: 46, angle: 225 },
+  { local: 50, angle: 270 },
+];
+
+function normalizeAngle(deg: number): number {
+  let a = deg % 360;
+  if (a > 180) a -= 360;
+  if (a <= -180) a += 360;
+  return a;
+}
+
+function lerpAngle(a0: number, a1: number, t: number): number {
+  let delta = a1 - a0;
+  if (delta > 180) delta -= 360;
+  if (delta < -180) delta += 360;
+  return a0 + delta * t;
+}
+
+export function sectionNumToAngle(sectionNum: number): number {
+  const local = sectionNum % 100;
+  if (local <= AZIMUTH_ANCHORS[0].local) {
+    return AZIMUTH_ANCHORS[0].angle;
+  }
+  for (let i = 0; i < AZIMUTH_ANCHORS.length - 1; i++) {
+    const a0 = AZIMUTH_ANCHORS[i];
+    const a1 = AZIMUTH_ANCHORS[i + 1];
+    if (local <= a1.local) {
+      const t = (local - a0.local) / (a1.local - a0.local);
+      return lerpAngle(a0.angle, a1.angle, t);
+    }
+  }
+  const last = AZIMUTH_ANCHORS[AZIMUTH_ANCHORS.length - 1];
+  return last.angle;
+}
+
+/** Sort key: stadium azimuth with tiny suffix offset for 111A / 111B / 111C. */
+export function sectionSortAngle(id: string): number {
+  const num = sectionSortKey(id);
+  const base = sectionNumToAngle(num);
+  const suffix = id.match(/^\d+([A-Z]+)/)?.[1];
+  const bump = suffix ? (suffix.charCodeAt(0) - 64) * 0.08 : 0;
+  return base + bump;
+}
+
+const CORNER_LOCALS = [6, 21, 31, 46] as const;
+const SECTION_GAP = 0.35;
+const RING_START = -90;
+
+function sliceWidth(count: number): number {
+  return (360 - count * SECTION_GAP) / count;
+}
+
+function slotMidAt(index: number, count: number, ringOffset: number): number {
+  const slice = sliceWidth(count);
+  const step = slice + SECTION_GAP;
+  return ringOffset + (RING_START + SECTION_GAP / 2 + index * step + slice / 2);
+}
+
+/** Match corner spokes (106/206/306 …) to equal slots; return shared rotation (deg). */
+function computeRingOffset(list: MetlifeSectionDef[]): number {
+  const sorted = [...list].sort((a, b) => sectionSortAngle(a.id) - sectionSortAngle(b.id));
+  const n = sorted.length;
+  const slice = sliceWidth(n);
+  const step = slice + SECTION_GAP;
+
+  let sumSin = 0;
+  let sumCos = 0;
+
+  for (const local of CORNER_LOCALS) {
+    const target = sectionNumToAngle(300 + local);
+    let best = sorted[0];
+    let bestDist = 999;
+    for (const s of sorted) {
+      const l = sectionSortKey(s.id) % 100;
+      let dist = Math.abs(l - local);
+      if (dist > 50) dist = 100 - dist;
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = s;
+      }
+    }
+    const idx = sorted.indexOf(best);
+    const slotMid = RING_START + SECTION_GAP / 2 + idx * step + slice / 2;
+    const delta = normalizeAngle(target - slotMid);
+    const rad = (delta * Math.PI) / 180;
+    sumSin += Math.sin(rad);
+    sumCos += Math.cos(rad);
+  }
+
+  return (Math.atan2(sumSin, sumCos) * 180) / Math.PI;
+}
 
 function polar(cx: number, cy: number, r: number, deg: number) {
   const rad = ((deg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  return {
+    x: cx + r * STRETCH_X * Math.cos(rad),
+    y: cy + r * STRETCH_Y * Math.sin(rad),
+  };
 }
 
-/** SVG wedge path for one section (top-down oval bowl). */
+/** SVG wedge path on an elliptical bowl (top-down football stadium). */
 export function wedgePath(
   startDeg: number,
   endDeg: number,
@@ -59,12 +168,18 @@ export function wedgePath(
   const p3 = polar(CX, CY, outerR, endDeg);
   const p4 = polar(CX, CY, innerR, endDeg);
   const large = endDeg - startDeg > 180 ? 1 : 0;
+
+  const oRx = outerR * STRETCH_X;
+  const oRy = outerR * STRETCH_Y;
+  const iRx = innerR * STRETCH_X;
+  const iRy = innerR * STRETCH_Y;
+
   return [
     `M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`,
     `L ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`,
-    `A ${outerR} ${outerR} 0 ${large} 1 ${p3.x.toFixed(2)} ${p3.y.toFixed(2)}`,
+    `A ${oRx.toFixed(2)} ${oRy.toFixed(2)} 0 ${large} 1 ${p3.x.toFixed(2)} ${p3.y.toFixed(2)}`,
     `L ${p4.x.toFixed(2)} ${p4.y.toFixed(2)}`,
-    `A ${innerR} ${innerR} 0 ${large} 0 ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`,
+    `A ${iRx.toFixed(2)} ${iRy.toFixed(2)} 0 ${large} 0 ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`,
     "Z",
   ].join(" ");
 }
@@ -76,7 +191,7 @@ export interface PlacedSection extends MetlifeSectionDef {
   midAngle: number;
 }
 
-/** Assign angular wedges per ring, sorted clockwise by section number. */
+/** Equal wedge per ring; order & corners from section numbers (Ticket-Compare layout). */
 export function placeMetlifeSections(): PlacedSection[] {
   const byRing: Record<1 | 2 | 3, MetlifeSectionDef[]> = { 1: [], 2: [], 3: [] };
 
@@ -84,23 +199,22 @@ export function placeMetlifeSections(): PlacedSection[] {
     byRing[sectionRing(s.id)].push(s);
   }
 
-  for (const ring of [1, 2, 3] as const) {
-    byRing[ring].sort((a, b) => sectionSortKey(a.id) - sectionSortKey(b.id));
-  }
-
+  const ringOffset = computeRingOffset(byRing[3]);
   const placed: PlacedSection[] = [];
-  const gap = 0.35;
 
   for (const ring of [1, 2, 3] as const) {
-    const list = byRing[ring];
+    const list = [...byRing[ring]].sort(
+      (a, b) => sectionSortAngle(a.id) - sectionSortAngle(b.id)
+    );
     const { inner, outer } = RING_BOUNDS[ring];
-    const slice = (360 - list.length * gap) / Math.max(list.length, 1);
-    let angle = -90;
+    const n = list.length;
+    const halfSlice = sliceWidth(n) / 2;
 
-    for (const s of list) {
-      const start = angle + gap / 2;
-      const end = angle + slice + gap / 2;
-      const mid = (start + end) / 2;
+    for (let i = 0; i < n; i++) {
+      const s = list[i];
+      const mid = slotMidAt(i, n, ringOffset);
+      const start = mid - halfSlice;
+      const end = mid + halfSlice;
       const labelR = (inner + outer) / 2;
       const label = polar(CX, CY, labelR, mid);
 
@@ -111,8 +225,6 @@ export function placeMetlifeSections(): PlacedSection[] {
         labelY: label.y,
         midAngle: mid,
       });
-
-      angle += slice + gap;
     }
   }
 
@@ -122,3 +234,25 @@ export function placeMetlifeSections(): PlacedSection[] {
 export function getMetlifeSection(id: string): MetlifeSectionDef | undefined {
   return metlifeLayout.sections.find((s) => s.id === id);
 }
+
+/**
+ * Pitch rectangle fully inside the lower-bowl hole (r < inner).
+ * Uses the largest axis-aligned rectangle inscribed in the inner ellipse,
+ * then scales down so corners stay clear of the seat wedges.
+ */
+export function getMetlifeField(padding = 0.92): { x: number; y: number; w: number; h: number } {
+  const inner = RING_BOUNDS[1].inner;
+  const a = inner * STRETCH_X;
+  const b = inner * STRETCH_Y;
+  const scale = padding / Math.SQRT2;
+  const w = 2 * a * scale;
+  const h = 2 * b * scale;
+  return {
+    x: CX - w / 2,
+    y: CY - h / 2,
+    w,
+    h,
+  };
+}
+
+export { CX, CY, STRETCH_X, STRETCH_Y, RING_BOUNDS };

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   metlifeLayout,
   placeMetlifeSections,
+  getMetlifeField,
   type MetlifeCategory,
   type PlacedSection,
 } from "@/lib/metlife-layout";
@@ -24,13 +25,19 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
   });
   const [hovered, setHovered] = useState<string | null>(null);
 
-  const field = metlifeLayout.field;
+  const field = getMetlifeField();
   const vb = metlifeLayout.viewBox.join(" ");
+  const fx = field.x;
+  const fy = field.y;
+  const fw = field.w;
+  const fh = field.h;
+  const fcx = fx + fw / 2;
+  const fcy = fy + fh / 2;
 
   const selectedMeta = selected ? getMetlifeSectionMeta(selected.id) : null;
 
   return (
-    <motion.div className="relative mx-auto w-full max-w-3xl">
+    <motion.div className="relative mx-auto w-full max-w-4xl">
       <div className="mb-4 flex flex-wrap justify-center gap-3 text-xs">
         {(Object.entries(metlifeLayout.categories) as [MetlifeCategory, (typeof metlifeLayout.categories)["1"]][]).map(
           ([key, cat]) => (
@@ -61,14 +68,62 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
         </defs>
 
         <ellipse
-          cx="100"
-          cy="70"
-          rx="92"
-          ry="62"
+          cx="130"
+          cy="55"
+          rx="98"
+          ry="50"
           fill="none"
           stroke="rgba(255,255,255,0.06)"
           strokeWidth="0.5"
         />
+
+        {/* Pitch drawn beneath sections so lower bowl wraps around it */}
+        <g pointerEvents="none">
+          <rect
+            x={fx}
+            y={fy}
+            width={fw}
+            height={fh}
+            rx={0.8}
+            fill="url(#metlifeField)"
+            stroke="#22c55e"
+            strokeWidth="0.5"
+          />
+          <line
+            x1={fcx}
+            y1={fy}
+            x2={fcx}
+            y2={fy + fh}
+            stroke="rgba(255,255,255,0.35)"
+            strokeWidth="0.3"
+          />
+          <circle
+            cx={fcx}
+            cy={fcy}
+            r={fh * 0.12}
+            fill="none"
+            stroke="rgba(255,255,255,0.25)"
+            strokeWidth="0.25"
+          />
+          <rect
+            x={fx}
+            y={fcy - fh * 0.22}
+            width={fw * 0.16}
+            height={fh * 0.44}
+            fill="none"
+            stroke="rgba(255,255,255,0.15)"
+            strokeWidth="0.2"
+          />
+          <rect
+            x={fx + fw - fw * 0.16}
+            y={fcy - fh * 0.22}
+            width={fw * 0.16}
+            height={fh * 0.44}
+            fill="none"
+            stroke="rgba(255,255,255,0.15)"
+            strokeWidth="0.2"
+          />
+        </g>
 
         {sections.map((sec) => {
           const cat = metlifeLayout.categories[sec.category];
@@ -94,15 +149,15 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
                 strokeWidth={isSelected ? 0.5 : 0.25}
                 strokeLinejoin="round"
               />
-              {(isSelected || isHovered || parseInt(sec.id) % 7 === 0) && (
+              {isHovered && (
                 <text
                   x={sec.labelX}
                   y={sec.labelY}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill={isSelected ? "#fff" : hasPanorama ? "#e2e8f0" : "#94a3b8"}
-                  fontSize={isSelected ? 3.2 : 2.2}
-                  fontWeight={isSelected ? 700 : 500}
+                  fill="#fff"
+                  fontSize="3"
+                  fontWeight="700"
                   pointerEvents="none"
                 >
                   {sec.id}
@@ -115,56 +170,6 @@ export default function MetLifeStadiumMap({ matchId, initialSectionId }: MetLife
             </g>
           );
         })}
-
-        <rect
-          x={field.x}
-          y={field.y}
-          width={field.w}
-          height={field.h}
-          rx={1}
-          fill="url(#metlifeField)"
-          stroke="#22c55e"
-          strokeWidth="0.6"
-          pointerEvents="none"
-        />
-        <line
-          x1={field.x + field.w / 2}
-          y1={field.y}
-          x2={field.x + field.w / 2}
-          y2={field.y + field.h}
-          stroke="rgba(255,255,255,0.35)"
-          strokeWidth="0.35"
-          pointerEvents="none"
-        />
-        <circle
-          cx={field.x + field.w / 2}
-          cy={field.y + field.h / 2}
-          r="3"
-          fill="none"
-          stroke="rgba(255,255,255,0.25)"
-          strokeWidth="0.25"
-          pointerEvents="none"
-        />
-        <rect
-          x={field.x}
-          y={field.y + field.h / 2 - 5}
-          width="8"
-          height="10"
-          fill="none"
-          stroke="rgba(255,255,255,0.15)"
-          strokeWidth="0.25"
-          pointerEvents="none"
-        />
-        <rect
-          x={field.x + field.w - 8}
-          y={field.y + field.h / 2 - 5}
-          width="8"
-          height="10"
-          fill="none"
-          stroke="rgba(255,255,255,0.15)"
-          strokeWidth="0.25"
-          pointerEvents="none"
-        />
       </motion.svg>
 
       <p className="mt-3 text-center text-xs text-slate-500">
