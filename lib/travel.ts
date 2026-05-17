@@ -67,9 +67,9 @@ const STADIUM_AIRPORT: Record<string, string> = {
   sofi: "LAX",
 };
 
-type DestRegion = "us-east" | "us-central" | "us-south" | "us-west" | "mexico" | "canada";
+export type DestRegion = "us-east" | "us-central" | "us-south" | "us-west" | "mexico" | "canada";
 
-const STADIUM_REGION: Record<string, DestRegion> = {
+export const STADIUM_REGION: Record<string, DestRegion> = {
   akron: "mexico",
   arrowhead: "us-central",
   att: "us-central",
@@ -88,9 +88,9 @@ const STADIUM_REGION: Record<string, DestRegion> = {
   sofi: "us-west",
 };
 
-type OriginRegion = "europe" | "canada" | "us-east" | "us-west" | "mexico";
+export type OriginRegion = "europe" | "canada" | "us-east" | "us-west" | "mexico";
 
-const ORIGIN_REGION: Record<string, OriginRegion> = {
+export const ORIGIN_REGION: Record<string, OriginRegion> = {
   cork: "europe",
   dublin: "europe",
   london: "europe",
@@ -103,7 +103,7 @@ const ORIGIN_REGION: Record<string, OriginRegion> = {
   "mexico-city": "mexico",
 };
 
-interface FlightLeg {
+export interface FlightLeg {
   airline: string;
   departure: string;
   arrival: string;
@@ -112,7 +112,7 @@ interface FlightLeg {
   stops: number;
 }
 
-const ROUTE_LEGS: Record<OriginRegion, Record<DestRegion, [FlightLeg, FlightLeg]>> = {
+export const ROUTE_LEGS: Record<OriginRegion, Record<DestRegion, [FlightLeg, FlightLeg]>> = {
   europe: {
     "us-east": [
       { airline: "Aer Lingus", departure: "08:30", arrival: "11:45", duration: "7h 15m", price: 489, stops: 0 },
@@ -245,12 +245,12 @@ const ROUTE_LEGS: Record<OriginRegion, Record<DestRegion, [FlightLeg, FlightLeg]
   },
 };
 
-const LOCAL_FLIGHTS: [FlightLeg, FlightLeg] = [
+export const LOCAL_FLIGHTS: [FlightLeg, FlightLeg] = [
   { airline: "Regional Express", departure: "09:00", arrival: "10:15", duration: "1h 15m", price: 95, stops: 0 },
   { airline: "Shuttle Air", departure: "16:30", arrival: "17:40", duration: "1h 10m", price: 88, stops: 0 },
 ];
 
-function formatPrice(amount: number, originRegion: OriginRegion): string {
+export function formatPrice(amount: number, originRegion: OriginRegion): string {
   if (originRegion === "europe") return `€${amount}`;
   if (originRegion === "mexico") return `$${amount} MXN`;
   return `$${amount}`;
@@ -284,7 +284,7 @@ function getStadiumDemandMultiplier(stadiumId: string): number {
   return marqueeStadiums.has(stadiumId) ? 1.08 : 1;
 }
 
-function estimateFlightPriceAmount(leg: FlightLeg, stadiumId: string, matchDate: string): number {
+export function estimateFlightPriceAmount(leg: FlightLeg, stadiumId: string, matchDate: string): number {
   const directFlightMultiplier = leg.stops === 0 ? 1.06 : 0.96;
   const estimatedPrice = leg.price
     * directFlightMultiplier

@@ -1,20 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import FlightCard from "./FlightCard";
 import HotelCard from "./HotelCard";
 import {
-  DEFAULT_ORIGIN_CITY_ID,
   getTravelData,
   ORIGIN_CITIES,
 } from "@/lib/travel";
 import type { Match } from "@/lib/data";
+import { useTripContext } from "@/lib/trip-context";
 
 const StadiumMapView = dynamic(() => import("./StadiumMapView"), { ssr: false });
-
-const ORIGIN_STORAGE_KEY = "pitch-perfect-origin-city";
 
 interface TravelPanelProps {
   match: Match;
@@ -22,18 +19,7 @@ interface TravelPanelProps {
 }
 
 export default function TravelPanel({ match, stadiumCoords }: TravelPanelProps) {
-  const [originCityId, setOriginCityId] = useState(DEFAULT_ORIGIN_CITY_ID);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(ORIGIN_STORAGE_KEY);
-    if (stored && ORIGIN_CITIES.some((c) => c.id === stored)) {
-      setOriginCityId(stored);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(ORIGIN_STORAGE_KEY, originCityId);
-  }, [originCityId]);
+  const { originCityId, setOriginCityId } = useTripContext();
 
   const travel = getTravelData(match.stadiumId, match.city, originCityId, match.date, stadiumCoords);
   const hotelCoords = travel.hotels.map((h) => h.coordinates);

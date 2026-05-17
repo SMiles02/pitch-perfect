@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { TripProvider } from "@/lib/trip-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +38,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased bg-[#0a0f1c] text-slate-100`}
       >
-        <Navbar />
-        <main>{children}</main>
+        <TripProvider>
+          <Navbar />
+          <main>{children}</main>
+        </TripProvider>
       </body>
     </html>
   );

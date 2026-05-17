@@ -1,145 +1,142 @@
 # Pitch Perfect
 
-**Immersive FIFA World Cup 2026 Travel and Seat Planning**
+**A FIFA World Cup 2026 matchday planner that connects fixtures, travel, saved trips, AI guidance, stadium maps, and seat previews in one demo-ready experience.**
 
-World Cup 2026 Next.js TypeScript Tailwind Mapbox Photo Sphere Viewer
+> Know the match, the route, the cost, and the view before you commit to the trip.
 
-> _"Know the matchday view before you book the trip."_
+## Overview
 
-## Challenge
+Pitch Perfect is built for fans trying to turn the 2026 World Cup fixture list into a realistic trip. Instead of jumping between schedules, maps, travel sites, stadium charts, and scattered advice, the app gives each match a planning workspace: compare travel options, ask an AI matchday concierge, save fixtures into a trip, explore the tournament path, and preview stadium sections before buying tickets.
 
-World Cup travel is expensive, emotional, and logistically messy. Fans often have to choose tickets, flights, hotels, and stadium sections without understanding how the whole trip fits together.
+The current version is designed as a polished hackathon prototype. It uses local tournament, stadium, travel, and seat-view data so the end-to-end flow is reliable during a live demo, with optional Mapbox and OpenAI integrations for richer maps and live AI responses.
 
-## Solution
+## What It Does
 
-Pitch Perfect brings fixtures, travel planning, stadium maps, and seat-level panoramas into one interactive experience. Start with a match, compare sample flights and hotels, explore the tournament path, choose a stadium section, and preview the view from the seat before committing to the trip.
+**Fixture discovery:** Browse the 104-match World Cup 2026 schedule, search by team, group, city, stadium, or stage, and open a dedicated page for any fixture.
 
-## Key Features
+**Personal trip planning:** Add matches to "My Trip", keep a saved departure city, estimate route costs, view itinerary legs, and see trip stops on a map.
 
-### Fixture Finder
+**Favorite teams:** Mark favorite national teams from the navbar drawer, bring their fixtures to the top of the home page, and filter the schedule down to the teams you care about.
 
-- **World Cup 2026 matches** - Browse the full tournament schedule from match 1 through the final
-- **Fast search** - Filter by team, city, stadium, or group
-- **Match detail pages** - Open a fixture to view date, time, venue, travel notes, and seat-preview links
-- **Knockout placeholders** - Later-stage fixtures show bracket-aware labels instead of fake teams
+**Country context:** Click supported team names to open country information, flag visuals, and a lightweight map context panel.
 
-### Trip Planning
+**AI matchday concierge:** Ask practical questions about where to stay, when to arrive, stadium transport, seat selection, or photo-friendly sections. Without an API key, the app still returns deterministic demo answers based on the same match context.
 
-- **Origin city selector** - Pick a departure city and keep the preference in local storage
-- **Sample flights** - Compare mock flight options for each host city
-- **Hotel suggestions** - See sample hotel stays near the stadium destination
-- **Stadium transport** - Compare estimated ways to get from the city to the venue
-- **Mapbox route view** - Visualize the origin, stadium, and hotel locations on an interactive map
+**Interactive stadium planning:** Explore venue pages, choose stadium sections, pick row/seat options, launch immersive panorama previews, and use mobile motion controls for supported seat views.
 
-### Match AI Chat
+**Tournament hub:** Review all group tables and follow the knockout bracket from the round of 32 through the final, with bracket-aware labels for unresolved teams.
 
-- **AI matchday concierge** - Ask practical questions about hotels, transport, timing, and seat choices for a specific fixture
-- **Grounded match context** - Answers are scoped to the selected match, stadium, saved origin city, sample flights, hotels, transport, and section data
-- **Suggested prompts** - Start quickly with common matchday questions like where to stay, safe post-match routes, or seat quality for photos
-- **Demo fallback** - If no OpenAI key is configured, the app returns local context-aware demo answers so the flow still works
+## Demo Highlights
 
-### Seat Preview
+- **Start on the home page** and search for a team, host city, or group.
+- **Open a match page** to show date, venue, travel suggestions, map, AI chat, and stadium planning entry points.
+- **Save the match to My Trip** and point out the navbar counter updating immediately.
+- **Open the favorite teams drawer** to select a country, then return to the schedule and use the "My Teams" filter.
+- **Ask Match AI** a question such as "Should I stay near the stadium or downtown?" or "Which seats are best for photos?"
+- **Open a MetLife stadium section**, select a seat, and use the side panel to launch the 360-degree preview or ticket link.
+- **Visit My Trip** to show the saved itinerary, route map, origin selector, estimated costs, and route optimization toggle.
+- **Finish in Tournament** to show the full group and knockout view connected back into the planning flow.
 
-- **Interactive stadium maps** - Select stadium sections from a visual seating map
-- **Detailed seating layouts** - Explore categorized stadium sections with realistic ticket tiers
-- **Seat picker** - Drill down from section to row and seat
-- **Fullscreen panoramas** - Open seat-level views with Photo Sphere Viewer
-- **Mobile motion controls** - Move your phone to look around supported panoramas with gyroscope controls
+## Core Experiences
 
-### Tournament View
+### Home And Fixture Search
 
-- **Groups and tables** - Review all 12 group-stage tables
-- **Knockout bracket** - Follow the path from match 73 to the final
-- **Linked fixtures** - Tournament entries connect back into the same match planning flow
+- Search across teams, groups, stadiums, cities, match IDs, and knockout labels.
+- Favorite-team sorting brings personally relevant fixtures forward.
+- Cards show date, venue, favorite status, and fast add-to-trip controls.
+- Match links preserve the core planning flow from discovery to detail.
 
-## Demo Flow
+### Match Detail Pages
 
-1. **Home** - Cinematic landing page with fixture search
-2. **Choose a Match** - Open travel and stadium planning for a fixture
-3. **Plan the Trip** - Compare sample flights, hotels, transport, and map locations
-4. **Pick a Section** - Use the stadium seating map to select a section
-5. **Preview the Seat** - Open a fullscreen panorama and move your phone to look around
-6. **Explore the Tournament** - Switch to groups and bracket views for the broader path
+- Shows formatted participant names, including bracket placeholders for unresolved knockout matches.
+- Includes a one-click trip save button.
+- Displays travel recommendations for the selected origin city.
+- Embeds the AI concierge with match, stadium, travel, transport, hotel, and section context.
+- Links into stadium and seat-view flows for the venue.
 
-## Quick Start
+### My Trip
+
+- Saves selected match IDs in browser local storage.
+- Shares the same saved departure city across travel panels, AI chat, and trip planning.
+- Sorts matches chronologically by default.
+- Includes an optimization toggle for same-day route ordering.
+- Estimates flight legs, hotel nights, and total trip cost.
+- Shows origin and destination stops in an interactive route map.
+- Lets users remove matches or clear the whole trip.
+
+### Favorite Teams And Country Details
+
+- The navbar heart opens a drawer for selecting favorite teams.
+- Favorite teams are stored locally and can be cleared at any time.
+- Supported team names render with flags and clickable country details.
+- Country modals add richer context without leaving the planning flow.
+
+### AI Matchday Concierge
+
+The `app/api/match-ai` route builds a compact planning context for the selected fixture and origin city, including:
+
+- match and stadium metadata
+- saved departure city
+- sample flight options
+- hotel suggestions
+- stadium transport options
+- available section and ticket tier signals
+
+If `OPENAI_API_KEY` is configured, the route calls OpenAI Chat Completions. If not, it uses local context-aware fallback answers so the demo still feels complete and does not depend on network or API availability.
+
+### Stadium And Seat Preview
+
+- MetLife includes a detailed section layout with category-based seating areas.
+- Sections can be opened from the stadium map and expanded into row/seat options.
+- Seat selection opens a side panel with panorama and ticket actions.
+- Panorama pages use Photo Sphere Viewer with desktop drag controls.
+- Mobile users can enable gyroscope controls for a physical "look around" demo.
+- Current panorama assets are prototype-friendly references for demonstrating the flow.
+
+## Data Model
+
+The app intentionally uses local data for hackathon reliability:
+
+- `data/matches.json` - 104-match tournament schedule.
+- `data/stadiums.json` - venue metadata, coordinates, and basic sections.
+- `data/layouts/metlife-sections.json` - detailed MetLife section geometry and categories.
+- `data/seatviews.json` - panorama asset mapping and default camera angles.
+- `lib/travel.ts` - deterministic flight, hotel, transport, pricing, and route estimates.
+- `lib/tournament.ts` - group and knockout participant helpers.
+- `lib/trip-context.tsx` - local saved trip, favorite teams, and origin city state.
+- `lib/trip-utils.ts` - itinerary, cost, and route optimization helpers.
+
+## Tech Stack
+
+- **Framework:** Next.js 15 App Router
+- **Language:** TypeScript
+- **UI:** React 19 and Tailwind CSS
+- **Animation:** Framer Motion
+- **Maps:** Mapbox GL and React Map GL
+- **AI:** Next.js API route with optional OpenAI Chat Completions
+- **Panoramas:** Photo Sphere Viewer
+- **Motion controls:** Photo Sphere Viewer Gyroscope Plugin
+- **State:** React context plus browser local storage for demo persistence
+
+## Getting Started
 
 ```bash
-# Install dependencies
 npm install
-
-# Set up environment variables
 cp .env.example .env.local
-
-# Optional: add a Mapbox token for the interactive map
-# NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_mapbox_token_here
-
-# Optional: add OpenAI for live Match AI Chat responses
-# OPENAI_API_KEY=sk-your_openai_api_key_here
-# OPENAI_MODEL=gpt-4o-mini
-
-# Start the development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-**Important:**
-
-- The map works best with a Mapbox public token in `.env.local`.
-- Match AI Chat works in demo mode without `OPENAI_API_KEY`; add one for live model responses.
-- `OPENAI_MODEL` is optional and defaults to `gpt-4o-mini`.
-- Seat panoramas work on desktop with click-and-drag controls.
-- For the gyroscope seat demo, use a physical mobile device over HTTPS or localhost.
-
-## Tech Stack
-
-### Frontend
-
-- **Framework:** Next.js 15 App Router
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Animation:** Framer Motion
-- **Maps:** Mapbox GL and React Map GL
-- **AI Chat:** Next.js API route backed by OpenAI Chat Completions
-- **Panoramas:** Photo Sphere Viewer
-- **Motion Controls:** Photo Sphere Viewer Gyroscope Plugin
-
-### Data and Assets
-
-- **Fixtures:** Local JSON match schedule
-- **Stadiums:** Local JSON venue and section metadata
-- **Travel:** Deterministic mock travel data from local helpers
-- **Stadium Layouts:** Detailed section geometry and category mapping
-- **Panoramas:** Public stadium panorama assets
-
-## Available Experiences
-
-**104 Matches | 16 Stadiums | Groups + Knockout | Seat-Level Preview**
-
-- **Fixture Search** - Search the tournament by team, city, stadium, or group
-- **Match Planning** - View travel notes, maps, flights, hotels, and stadium access
-- **Match AI Chat** - Ask an AI concierge for fixture-specific travel, timing, and seat advice
-- **Tournament Hub** - Browse group tables and knockout bracket paths
-- **Stadium Seat Preview** - Pick sections and launch panorama-style seat views across venues
-
-## Match AI Chat
-
-The match detail page includes an AI matchday concierge powered by `app/api/match-ai`. It builds a compact context from the selected fixture, stadium metadata, saved departure city, sample flights, hotels, transport options, and section signals, then answers only within that matchday context.
-
-Add these variables to `.env.local` to enable live model responses:
+Recommended `.env.local` values:
 
 ```bash
-OPENAI_API_KEY=sk-your_openai_api_key_here
+NEXT_PUBLIC_MAPBOX_TOKEN=pk_your_mapbox_token
+OPENAI_API_KEY=sk_your_openai_key
 OPENAI_MODEL=gpt-4o-mini
 ```
 
-`OPENAI_API_KEY` is required for live OpenAI responses. `OPENAI_MODEL` is optional; if omitted, the API route uses `gpt-4o-mini`. Without an API key, Pitch Perfect still returns local demo concierge answers based on the same match context.
-
-## Panoramas
-
-The panorama experience is designed to give fans a fast, visual sense of the view from different stadium sections. Current assets are prototype reference images processed into 2:1 viewer-friendly formats so the seat preview flow can be demonstrated across venues.
-
-For production, these previews should be backed by licensed, venue-approved 360-degree equirectangular imagery with a 2:1 aspect ratio.
+`NEXT_PUBLIC_MAPBOX_TOKEN` enables the interactive map views. `OPENAI_API_KEY` enables live AI answers. The app still runs without OpenAI by using built-in demo responses.
 
 ## Scripts
 
@@ -148,45 +145,37 @@ npm run dev                 # Start the development server
 npm run build               # Create a production build
 npm run start               # Serve the production build
 npm run lint                # Run ESLint
+npm run panoramas:metlife   # Regenerate MetLife panorama assets
 ```
 
 ## Project Structure
 
 ```text
-app/                     Next.js routes and pages
-components/              Reusable UI, maps, travel cards, stadium views
-data/                    Match, stadium, section, and seat-view JSON
-lib/                     Data access, travel generation, tournament helpers
-public/panoramas/        Stadium panorama source and generated assets
-scripts/                 Panorama generation scripts
+app/                     Next.js routes, pages, and API endpoints
+components/              UI, cards, maps, drawers, travel panels, and viewers
+data/                    Local fixture, stadium, layout, and seat-view data
+lib/                     Data access, travel logic, trip state, and helpers
+public/panoramas/        Panorama assets used by the seat preview flow
+scripts/                 Utility scripts for panorama generation
 ```
+
+## Demo Notes
+
+- The travel, pricing, hotel, and transport data is deterministic sample data built for a stable demo.
+- Panorama imagery is prototype material. A production deployment should use licensed venue-approved 360-degree equirectangular assets.
+- Gyroscope controls work best on a physical mobile device over HTTPS or localhost.
+- Maps need a valid Mapbox public token for the best presentation.
+- Saved trips and favorite teams are stored locally in the browser, not in a backend account.
 
 ## Roadmap
 
-### Completed
+- Add live ticket availability and pricing integrations.
+- Replace sample travel estimates with live flight, hotel, and transit data.
+- Expand licensed panorama coverage across every host venue.
+- Add shareable trip plans and account-based persistence.
+- Improve accessibility coverage for keyboard users on stadium maps.
+- Add richer country, visa, and travel advisory context for international fans.
 
-- Cinematic landing page
-- Full fixture search
-- Match detail pages
-- Sample flight and hotel planning
-- Mapbox-powered travel map
-- Group-stage tables
-- Knockout bracket view
-- Interactive stadium section selection
-- Seat picker flow
-- Fullscreen panorama viewer
-- Mobile gyroscope controls
-- Detailed stadium layout and panorama mapping
+## Built For
 
-### Next
-
-- Expand the panorama library with more venue-approved seat views
-- Add live pricing and availability integrations
-- Expand travel data beyond deterministic mock options
-- Add account-based saved trips
-- Add shareable trip plans
-- Add accessibility and keyboard refinements for stadium maps
-
-## Built By
-
-Built for football fans planning the biggest trip of 2026.
+Pitch Perfect was built for fans planning the biggest football trip of 2026, and for a hackathon demo that needs to tell that story clearly from the first click.

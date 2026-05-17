@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
+import MatchAiChat from "@/components/MatchAiChat";
 import TravelPanel from "@/components/TravelPanel";
+import AddToTripButton from "@/components/AddToTripButton";
 import { getMatch, getStadium } from "@/lib/data";
 import { formatParticipant, getBracketSlot } from "@/lib/tournament";
+import TeamName from "@/components/TeamName";
 
 export default function MatchPage() {
   const params = useParams();
@@ -46,12 +49,19 @@ export default function MatchPage() {
           <p className="text-sm uppercase tracking-[0.22em] text-emerald-300/80">
             Match {match.id} · {match.group}
           </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
-            {homeLabel} vs {awayLabel}
-          </h1>
-          <p className="mt-2 text-slate-400">
-            {match.stadium} · {match.city} · {date} at {match.time}
-          </p>
+          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+                <TeamName name={match.home} label={homeLabel} /> vs <TeamName name={match.away} label={awayLabel} />
+              </h1>
+              <p className="mt-2 text-slate-400">
+                {match.stadium} · {match.city} · {date} at {match.time}
+              </p>
+            </div>
+            <div className="shrink-0 sm:w-40">
+              <AddToTripButton matchId={match.id} />
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -63,6 +73,10 @@ export default function MatchPage() {
           <h2 className="mb-6 text-xl font-semibold">Travel notes</h2>
           <TravelPanel match={match} stadiumCoords={stadium.coordinates} />
         </motion.div>
+
+        <div className="mb-10">
+          <MatchAiChat match={match} stadium={stadium} />
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

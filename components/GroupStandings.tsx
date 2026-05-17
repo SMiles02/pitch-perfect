@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { EMPTY_STANDINGS_ROW, getTeamsByGroup } from "@/lib/tournament";
 import type { Match } from "@/lib/data";
+import TeamName from "./TeamName";
 
 interface GroupStandingsProps {
   matches: Match[];
@@ -15,7 +16,7 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
       {Array.from(teamsByGroup.entries()).map(([groupName, teams], i) => (
         <motion.article
@@ -75,8 +76,8 @@ export default function GroupStandings({ matches }: GroupStandingsProps) {
                         isQualifier ? "bg-emerald-300/5" : ""
                       }`}
                     >
-                      <td className="px-3 py-2">
-                        <span className="font-medium text-slate-200">{team}</span>
+                      <td className="whitespace-nowrap px-3 py-2">
+                        <TeamName name={team} className="font-medium text-slate-200" />
                         {row === 0 && (
                           <span className="ml-1.5 text-[10px] text-emerald-300/80">1st</span>
                         )}

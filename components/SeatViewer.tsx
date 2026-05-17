@@ -177,7 +177,7 @@ export default function SeatViewer({
                   <span className="h-5 w-3 rounded-sm border border-emerald-200/80" />
                 </motion.div>
                 <p className="text-sm font-semibold text-white">
-                  Move your device to look around
+                  Move your phone to look around
                 </p>
                 <p className="mt-1 text-xs text-slate-400">
                   {isMobile

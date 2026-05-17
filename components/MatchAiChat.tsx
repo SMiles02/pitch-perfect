@@ -3,9 +3,8 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Match, Stadium } from "@/lib/data";
-import { DEFAULT_ORIGIN_CITY_ID, ORIGIN_CITIES } from "@/lib/travel";
-
-const ORIGIN_STORAGE_KEY = "pitch-perfect-origin-city";
+import { useTripContext } from "@/lib/trip-context";
+import TeamName from "./TeamName";
 
 const SUGGESTED_QUESTIONS = [
   "Should I stay near the stadium or downtown?",
@@ -27,7 +26,7 @@ interface MatchAiChatProps {
 }
 
 export default function MatchAiChat({ match, stadium }: MatchAiChatProps) {
-  const [originCityId, setOriginCityId] = useState(DEFAULT_ORIGIN_CITY_ID);
+  const { originCityId } = useTripContext();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome",
@@ -40,13 +39,6 @@ export default function MatchAiChat({ match, stadium }: MatchAiChatProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isDemoMode, setIsDemoMode] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(ORIGIN_STORAGE_KEY);
-    if (stored && ORIGIN_CITIES.some((city) => city.id === stored)) {
-      setOriginCityId(stored);
-    }
-  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -133,7 +125,7 @@ export default function MatchAiChat({ match, stadium }: MatchAiChatProps) {
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">Ask AI about this match</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-              Scoped to {match.home} vs {match.away}, {stadium.name}, your saved departure city,
+              Scoped to <TeamName name={match.home} /> vs <TeamName name={match.away} />, {stadium.name}, your saved departure city,
               and the trip options on this page.
             </p>
           </div>

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MatchCard from "@/components/MatchCard";
 import type { Match } from "@/lib/data";
+import { useTripContext } from "@/lib/trip-context";
 
 const PREVIEW_COUNT = 4;
 
@@ -33,16 +34,36 @@ interface MatchExplorerProps {
 export default function MatchExplorer({ matches }: MatchExplorerProps) {
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [myTeamsOnly, setMyTeamsOnly] = useState(false);
+  const { favoriteTeams, isFavoriteTeam } = useTripContext();
+  const hasFavorites = favoriteTeams.length > 0;
 
-  const sorted = useMemo(() => sortMatchesByDate(matches), [matches]);
+  const sorted = useMemo(() => {
+    const byDate = sortMatchesByDate(matches);
+    if (!hasFavorites) return byDate;
+    return [...byDate].sort((a, b) => {
+      const aFav = isFavoriteTeam(a.home) || isFavoriteTeam(a.away) ? 0 : 1;
+      const bFav = isFavoriteTeam(b.home) || isFavoriteTeam(b.away) ? 0 : 1;
+      if (aFav !== bFav) return aFav - bFav;
+      const byDateCmp = a.date.localeCompare(b.date);
+      if (byDateCmp !== 0) return byDateCmp;
+      return a.time.localeCompare(b.time);
+    });
+  }, [matches, hasFavorites, isFavoriteTeam]);
 
   const filtered = useMemo(() => {
+    let result = sorted;
     const trimmed = query.trim();
-    if (!trimmed) return sorted;
-    return sorted.filter((m) => matchesQuery(m, trimmed));
-  }, [sorted, query]);
+    if (trimmed) {
+      result = result.filter((m) => matchesQuery(m, trimmed));
+    }
+    if (myTeamsOnly && hasFavorites) {
+      result = result.filter((m) => isFavoriteTeam(m.home) || isFavoriteTeam(m.away));
+    }
+    return result;
+  }, [sorted, query, myTeamsOnly, hasFavorites, isFavoriteTeam]);
 
-  const isSearching = query.trim().length > 0;
+  const isSearching = query.trim().length > 0 || myTeamsOnly;
   const displayed = isSearching
     ? filtered
     : showAll
@@ -110,6 +131,25 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
             className="w-full rounded-xl border border-slate-500/20 bg-slate-950/50 py-3 pl-11 pr-4 text-sm text-slate-200 placeholder:text-slate-500 outline-none transition-colors focus:border-emerald-300/40 focus:ring-1 focus:ring-emerald-300/20"
           />
         </label>
+        {hasFavorites && (
+          <button
+            type="button"
+            onClick={() => {
+              setMyTeamsOnly((prev) => !prev);
+              setShowAll(false);
+            }}
+            className={`shrink-0 rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
+              myTeamsOnly
+                ? "border-emerald-300/30 bg-emerald-300/15 text-emerald-200"
+                : "border-slate-500/20 bg-slate-950/45 text-slate-400 hover:border-emerald-300/25 hover:text-emerald-200"
+            }`}
+          >
+            <svg className="mr-1.5 inline h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+            </svg>
+            My Teams
+          </button>
+        )}
 
         <p className="shrink-0 text-center text-sm text-slate-500 sm:text-right">
           {isSearching ? (
@@ -146,7 +186,12 @@ export default function MatchExplorer({ matches }: MatchExplorerProps) {
               className="grid gap-6 sm:grid-cols-2"
             >
               {displayed.map((match, i) => (
-                <MatchCard key={match.id} match={match} index={i} />
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  index={i}
+                  isFavorite={hasFavorites && (isFavoriteTeam(match.home) || isFavoriteTeam(match.away))}
+                />
               ))}
             </motion.div>
           ) : (

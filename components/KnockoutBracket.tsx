@@ -9,6 +9,7 @@ import {
   getBracketSlot,
 } from "@/lib/tournament";
 import type { Match } from "@/lib/data";
+import TeamName from "./TeamName";
 
 interface KnockoutBracketProps {
   matches: Match[];
@@ -49,13 +50,13 @@ function BracketMatchCard({ match }: { match: Match }) {
       </motion.div>
       <div className="space-y-1.5">
         <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-200">
-          {homeLabel}
+          <TeamName name={match.home} label={homeLabel} className="text-xs" />
         </p>
         <p className="text-center text-[10px] font-semibold uppercase tracking-wider text-slate-600">
           vs
         </p>
         <p className="truncate text-xs font-medium leading-snug text-slate-200 group-hover:text-emerald-200">
-          {awayLabel}
+          <TeamName name={match.away} label={awayLabel} className="text-xs" />
         </p>
       </div>
       {isThirdPlace && (
